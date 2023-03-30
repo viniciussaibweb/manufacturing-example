@@ -12,9 +12,6 @@ function DialogLoadingContainer({
   const el = document.createElement("div");
   const modalContainer = document.getElementById("modal");
 
-  console.log(el);
-  console.log(modalContainer);
-
   useEffect(() => {
     if (isOpen) {
       modalContainer?.appendChild(el);
