@@ -1,14 +1,16 @@
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 import { lighten } from "polished";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import Select, {
-  GroupBase,
-  Props as SelectProps,
-  OptionProps,
-} from "react-select";
+import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { headShake } from "react-animations";
 import "react-perfect-scrollbar/dist/css/styles.css";
+
+
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+import "react-toastify/dist/ReactToastify.css";
 
 import { device } from "./mediaQuery";
 
@@ -1000,7 +1002,7 @@ export const Linha = styled.div`
   width: 100%;
 `;
 
-interface PropsAreaComp {
+interface propsAreaComp {
   flex?: string;
   algSelf?: string;
   fDirection?: string;
@@ -1008,17 +1010,17 @@ interface PropsAreaComp {
   pleft?: string;
   ptop?: string;
   pright?: string;
-  noPd?: string;
+  noPd?: boolean;
   mg?: number;
-  wd?: number;
+  wd?: string;
   minWd?: number;
-  hver?: string;
+  hver?: boolean;
   bright?: string;
   btn?: string;
   wdr?: number;
 }
 
-export const AreaComp = styled.div<PropsAreaComp>`
+export const AreaComp = styled.div<propsAreaComp>`
   display: flex;
   flex: ${(props) => props.flex};
   flex-direction: ${(props) =>
@@ -1173,13 +1175,13 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
   @media ${device.mobileS} {
     /* flex-direction: column; */
     flex-direction: ${(props) =>
-      props.fDirection ? props.fDirection : "column"};
+    props.fDirection ? props.fDirection : "column"};
   }
 
   @media ${device.tablet} {
     /* flex-direction: column; */
     flex-direction: ${(props) =>
-      props.fDirection ? props.fDirection : "column"};
+    props.fDirection ? props.fDirection : "column"};
     .ag-theme-balham {
       height: 50vh !important;
     }
@@ -1206,7 +1208,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
 `;
 const headShakeEffect = keyframes`${headShake}`;
 
-export const CustomSelect = styled(Select)<{ invalid: boolean }>`
+export const CustomSelect = styled(Select) <{ invalid: boolean }>`
   ${(props) =>
     props.invalid &&
     css`
@@ -1292,14 +1294,14 @@ export const CustomSelect = styled(Select)<{ invalid: boolean }>`
   }
   & .Select__control {
     ${(props) =>
-      props.isMulti &&
-      css`
+    props.isMulti &&
+    css`
         height: auto;
       `}
   }
 `;
 
-export const AsyncCustomSelect = styled(AsyncSelect)<{
+export const AsyncCustomSelect = styled(AsyncSelect) <{
   invalid: boolean;
 }>`
   ${(props) =>
@@ -1387,7 +1389,7 @@ export const AsyncCustomSelect = styled(AsyncSelect)<{
 `;
 
 interface propsTolbarContainer {
-  bckColor: string;
+  bckColor?: string;
 }
 
 export const ToolbarContainer = styled.div<propsTolbarContainer>`

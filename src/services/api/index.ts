@@ -6,6 +6,7 @@ import { GetApiBaseUrl } from "../utils";
 export const ApiTypes = {
   EMISSORES: "EMISSORES",
   SAIBWEB: "SAIBWEB",
+  MAINTENANCE: "MAINTENANCE",
   ADM: "ADM",
 };
 
@@ -55,3 +56,4 @@ export class ApiService {
 }
 
 export const Api = (type = ApiTypes.SAIBWEB) => ApiService.getInstance(type);
+

@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Header from "@/components/header";
 
+import { ToastContainer } from "react-toastify";
+
 function LoggedLayout({ children }: { children: React.ReactNode }) {
   // const Header = dynamic(() => import("../../components/header"), {
   //   ssr: false,
@@ -35,6 +37,7 @@ function LoggedLayout({ children }: { children: React.ReactNode }) {
         />
         <Header />
         <Content altura={Altura}>
+          <ToastContainer autoClose={3000} />
           <ContentArea altura={Altura}>{children}</ContentArea>
         </Content>
       </Wrapper>
