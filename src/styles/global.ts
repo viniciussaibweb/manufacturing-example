@@ -6,9 +6,11 @@ import AsyncSelect from "react-select/async";
 import { headShake } from "react-animations";
 import "react-perfect-scrollbar/dist/css/styles.css";
 
+// import "ag-grid-community/styles/ag-grid.css";
+// import "ag-grid-community/styles/ag-theme-alpine.css";
 
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+// import "ag-grid-community/dist/styles/ag-grid.css";
+// import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -561,15 +563,28 @@ div.ag-root .ag-cell-focus {
   }
 }
 
+.ag-theme-alpine {
+    --ag-grid-size: 10px;
+    --ag-list-item-height: 28px;
+    --ag-row-height: 28px;
+    --ag-row-hover-color: #ecf0f1;
+    --ag-cell-horizontal-padding: 10px;
+    --ag-selected-row-background-color: rgb(141 68 175 / 60%);
+}
+
 .grid-red-row {
   background-color: #e42a3c !important;
 }
 
-.ag-theme-balham .grid-red-row.ag-row-selected {
+.ag-theme-alpine .grid-red-row.ag-row-selected {
   background-color: #e42a3c !important;
 }
 
-.ag-theme-balham {
+.ag-row {
+  /* height: 28px!important; */
+}
+
+.ag-theme-alpine {
   font-family: 'Roboto',sans-serif !important;
 }
 .row-with-error,  .row-red{
@@ -583,27 +598,42 @@ div.ag-root .ag-cell-focus {
   background-color: #8ACC8B!important;
 }
 
+.ag-header-cell {
+  padding: 0 10px;
+}
 
-.ag-theme-balham .ag-row-selected {
+.ag-row-selected {
   /* background-color: rgba(100,12,141,0.6) !important; */
   background-color: rgb(141 68 175 / 60%) !important;
 }
 
-.ag-theme-balham  .ag-row-selected .ag-cell {
+.ag-theme-alpine  .ag-row-selected .ag-cell {
   color: #fff;
 }
 
-.ag-theme-balham  .ag-row-selected .ag-cell .ag-cell-editor {
+.ag-theme-alpine  .ag-row-selected .ag-cell .ag-cell-editor {
   color: #000;
 }
 
-.ag-theme-balham .ag-select .ag-picker-field-wrapper {
+.ag-theme-alpine .ag-select .ag-picker-field-wrapper {
   color: #000;
+}
+
+.ag-header.ag-pivot-off {
+  height: 30px !important;
+  min-height: 30px !important;
+}
+.ag-header-row.ag-header-row-column {
+  height: 100%!important;
+}
+.ag-header-cell-label {
+  height: max-content;
+  align-self: center;
 }
 
 .ag-header {
-  height: 28px !important;
-  min-height: 28px !important;
+  /* height: 28px !important;
+  min-height: 28px !important; */
 
   /* @media ${device.mobileS} {
     height: 27px;
@@ -853,7 +883,8 @@ export const Container = styled.div`
     padding: 1px;
   }
 
-  .MuiPaper-elevation4 {
+  .MuiPaper-elevation4,
+  .MuiTabs-flexContainer {
     box-shadow: none;
     background: #fff;
     border-bottom: solid 1px #61098a;
@@ -1175,14 +1206,14 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
   @media ${device.mobileS} {
     /* flex-direction: column; */
     flex-direction: ${(props) =>
-    props.fDirection ? props.fDirection : "column"};
+      props.fDirection ? props.fDirection : "column"};
   }
 
   @media ${device.tablet} {
     /* flex-direction: column; */
     flex-direction: ${(props) =>
-    props.fDirection ? props.fDirection : "column"};
-    .ag-theme-balham {
+      props.fDirection ? props.fDirection : "column"};
+    .ag-theme-alpine {
       height: 50vh !important;
     }
   }
@@ -1192,7 +1223,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     width: ${(props) => props.wd}%;
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
 
-    .ag-theme-balham {
+    .ag-theme-alpine {
       height: 50vh !important;
     }
   }
@@ -1201,14 +1232,14 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     /* flex-direction: row; */
     width: ${(props) => props.wd}%;
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
-    .ag-theme-balham {
+    .ag-theme-alpine {
       height: 60vh !important;
     }
   }
 `;
 const headShakeEffect = keyframes`${headShake}`;
 
-export const CustomSelect = styled(Select) <{ invalid: boolean }>`
+export const CustomSelect = styled(Select)<{ invalid: boolean }>`
   ${(props) =>
     props.invalid &&
     css`
@@ -1294,14 +1325,14 @@ export const CustomSelect = styled(Select) <{ invalid: boolean }>`
   }
   & .Select__control {
     ${(props) =>
-    props.isMulti &&
-    css`
+      props.isMulti &&
+      css`
         height: auto;
       `}
   }
 `;
 
-export const AsyncCustomSelect = styled(AsyncSelect) <{
+export const AsyncCustomSelect = styled(AsyncSelect)<{
   invalid: boolean;
 }>`
   ${(props) =>
@@ -1626,4 +1657,44 @@ export const Row = styled.div<propsRow>`
   width: ${(props) => props.maxWd || "100%"};
   max-width: ${(props) => props.maxWd};
 `;
-/* ======== Estilização padrão das páginas ======= */
+
+interface ToolbarProps {
+  colorInverterDefault?: boolean;
+}
+//  export const Toolbar = styled.div<ToolbarProps>`
+//   margin: auto;
+//   font-size: 16px;
+//   padding-top: 4px;
+//   color: #fff;
+//   font-weight: bold;
+
+//   ${({ colorInverterDefault }) =>
+//     colorInverterDefault &&
+//     css`
+//   color: #fff;
+
+//     `}
+// `;
+
+export const Toolbar = styled(ToolbarContainer)<ToolbarProps>`
+  justify-content: space-between;
+  margin-bottom: 0;
+  background-color: #543676;
+  color: #fff;
+  height: 28px;
+
+  .title {
+    margin: auto;
+    font-size: 16px;
+    padding-top: 4px;
+    font-weight: bold;
+  }
+
+  ${({ colorInverterDefault }) =>
+    colorInverterDefault &&
+    css`
+      color: #543676;
+      border-bottom: 1px solid #543676;
+      background-color: #fff;
+    `}
+`;

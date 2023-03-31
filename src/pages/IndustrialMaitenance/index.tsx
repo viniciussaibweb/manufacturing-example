@@ -1,61 +1,30 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core";
 import * as Yup from "yup";
+import { FaClipboard } from "react-icons/fa";
 
 import { ApiService, ApiTypes } from "../../services/api/index";
 
-import {
-  PageContainer,
-  PageBody,
-  FormContainer,
-  Toolbar,
-  GridContainer,
-} from "./styles";
+import { PageContainer, Wrapper } from "./styles";
 
-import {
-  ToolbarButtonConfirm,
-  ToolbarButtonWarning,
-  BoxComponentes,
-  AreaComp,
-  ToolbarButton,
-  Container,
-  AreaConsult,
-} from "../../styles/global";
+import { ToolbarButtonWarning, Toolbar } from "../../styles/global";
 
-import {
-  MdSave,
-  MdClose,
-  MdSearch,
-  MdDelete,
-  MdModeEdit,
-} from "react-icons/md";
+import { MdClose, MdSearch } from "react-icons/md";
 import { BootstrapTooltip } from "../../components/Tooltip/index";
-
-import { AgGridReact } from "ag-grid-react";
 
 import { toast } from "react-toastify";
 
-import Dialog from "@/components/Dialog";
-import Input from "../../components/Input/index";
-import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
-import TabPanel from "@/components/TabPanel";
-
-interface CellRendererParams {
-  data: {
-    mafeId: number;
-    mafeEmpId: number;
-    mafeUsrId: number;
-    mafeCodigo: number;
-    mafeDescricao: string;
-  };
-}
+import TabList from "./TabList";
+import { ToolsProvider, useTools } from "@/hooks/IndustrialMaintenance/useTool";
+import Tab from "@/components/Tab";
+import TabRegister from "./TabRegister";
 
 const IndustrialMaitenance: React.FC = () => {
-  const [listIndustrialMaitenance, setListIndustrialMaitenance] = useState([]);
   const [visible, setVisible] = useState(false);
   const [idEdicao, setIdEdicao] = useState<number>();
+  const { filterTools } = useTools();
+  const [tabActive, setTabActive] = useState(0);
 
   const formCadastroRef: React.RefObject<FormHandles> =
     useRef<FormHandles>(null);
@@ -75,15 +44,8 @@ const IndustrialMaitenance: React.FC = () => {
     params.api.sizeColumnsToFit();
   };
 
-  async function getIndustrialMaitenance() {
-    const Response = await api.get("/industrial-maintenance/tool");
-    const mafe = Response.data;
-
-    setListIndustrialMaitenance(mafe);
-  }
-
   useEffect(() => {
-    getIndustrialMaitenance();
+    filterTools();
   }, []);
 
   const handleEdit = async (params: { mafeDescricao: string }) => {
@@ -97,7 +59,7 @@ const IndustrialMaitenance: React.FC = () => {
         mafeDescricao: params.mafeDescricao,
       };
       await api.patch(`/industrial-maintenance/tool/${idEdicao}`, objRequest);
-      getIndustrialMaitenance();
+      filterTools();
       setVisible(false);
     } catch (err) {
       toast.error(`Falha ao alterar o cadastro. Motivo: ${err}`, toastOptions);
@@ -110,7 +72,7 @@ const IndustrialMaitenance: React.FC = () => {
       const idMafe = params.data.mafeId;
       await api.delete(`/industrial-maintenance/tool/${idMafe}`);
       toast.success("Item deletado com sucesso!");
-      getIndustrialMaitenance();
+      filterTools();
     } catch (err) {
       toast.error(
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
@@ -140,7 +102,7 @@ const IndustrialMaitenance: React.FC = () => {
 
       reset();
 
-      getIndustrialMaitenance();
+      filterTools();
     } catch (err) {
       const validationErrors: Record<string, string> = {};
 
@@ -176,7 +138,7 @@ const IndustrialMaitenance: React.FC = () => {
         `/industrial-maintenance/tool?filter=${mafeDescricao}`
       );
       const mafe = Response.data;
-      setListIndustrialMaitenance(mafe);
+      // setListIndustrialMaitenance(mafe);
     } catch (err) {}
   };
 
@@ -184,62 +146,62 @@ const IndustrialMaitenance: React.FC = () => {
     setVisible(false);
   }
 
-  const gridColumnDef = [
-    {
-      field: "mafeEmpId",
-      headerName: "AÇÕES",
-      minWidth: 100,
-      maxWidth: 200,
-      lockVisible: true,
-      cellRenderer(params: CellRendererParams) {
-        return (
-          <>
-            <BootstrapTooltip title="Excluir" placement="top">
-              <button
-                type="button"
-                className="grid-button"
-                onClick={() => handleExcluir(params)}
-              >
-                <MdDelete size={20} color="#61098a" />
-              </button>
-            </BootstrapTooltip>
-            <BootstrapTooltip title="Editar" placement="top">
-              <button
-                type="button"
-                className="grid-button"
-                onClick={() => handleOpenEdit(params)}
-              >
-                <MdModeEdit size={20} color="#61098a" />
-              </button>
-            </BootstrapTooltip>
-          </>
-        );
-      },
-    },
-    {
-      field: "mafeCodigo",
-      headerName: "CÓDIGO",
-      minWidth: 80,
-      maxWidth: 100,
-      sortable: true,
-      resizable: true,
-      filter: true,
-      lockVisible: true,
-      cellStyle: { fontWeight: "bold" },
-    },
-    {
-      field: "mafeDescricao",
-      headerName: "DESCRIÇÃO",
-      sortable: true,
-      resizable: true,
-      // headerClass: "ag-header-cell-editable",
-      // cellEditorFramework: GridInput,
-      filter: true,
-      lockVisible: true,
-    },
-  ];
+  // const gridColumnDef = [
+  //   {
+  //     field: "mafeEmpId",
+  //     headerName: "AÇÕES",
+  //     minWidth: 100,
+  //     maxWidth: 200,
+  //     lockVisible: true,
+  //     cellRenderer(params: CellRendererParams) {
+  //       return (
+  //         <>
+  //           <BootstrapTooltip title="Excluir" placement="top">
+  //             <button
+  //               type="button"
+  //               className="grid-button"
+  //               onClick={() => handleExcluir(params)}
+  //             >
+  //               <MdDelete size={20} color="#61098a" />
+  //             </button>
+  //           </BootstrapTooltip>
+  //           <BootstrapTooltip title="Editar" placement="top">
+  //             <button
+  //               type="button"
+  //               className="grid-button"
+  //               onClick={() => handleOpenEdit(params)}
+  //             >
+  //               <MdModeEdit size={20} color="#61098a" />
+  //             </button>
+  //           </BootstrapTooltip>
+  //         </>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     field: "mafeCodigo",
+  //     headerName: "CÓDIGO",
+  //     minWidth: 80,
+  //     maxWidth: 100,
+  //     sortable: true,
+  //     resizable: true,
+  //     filter: true,
+  //     lockVisible: true,
+  //     cellStyle: { fontWeight: "bold" },
+  //   },
+  //   {
+  //     field: "mafeDescricao",
+  //     headerName: "DESCRIÇÃO",
+  //     sortable: true,
+  //     resizable: true,
+  //     // headerClass: "ag-header-cell-editable",
+  //     // cellEditorFramework: GridInput,
+  //     filter: true,
+  //     lockVisible: true,
+  //   },
+  // ];
   return (
-    <>
+    <Wrapper>
       <PageContainer>
         <Toolbar>
           {/* <BootstrapTooltip
@@ -257,25 +219,35 @@ const IndustrialMaitenance: React.FC = () => {
             </ToolbarButton>
           </BootstrapTooltip> */}
 
-          <span
-            style={{
-              margin: "auto",
-              fontSize: "16px",
-              paddingTop: "4px",
-              color: "#fff",
-              fontWeight: "bold",
-            }}
-          >
-            TOOLS
-          </span>
+          <span className="title">TOOLS</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonWarning type="button">
               <MdClose size={21} color="#fff" />
             </ToolbarButtonWarning>
           </BootstrapTooltip>
         </Toolbar>
-        <TabPanel></TabPanel>
-        <PageBody>
+
+        <Tab
+          tabActive={tabActive}
+          onChange={(index) => setTabActive(index)}
+          tabItems={[
+            {
+              component: <TabList />,
+              title: {
+                icon: <MdSearch size={20} />,
+                label: "Lista configurações",
+              },
+            },
+            {
+              component: <TabRegister />,
+              title: {
+                icon: <FaClipboard size={20} />,
+                label: "Cadastrar/editar",
+              },
+            },
+          ]}
+        />
+        {/* <PageBody>
           <BoxComponentes>
             <FormContainer>
               <Form ref={formCadastroRef} onSubmit={handleActionSubmit}>
@@ -295,7 +267,7 @@ const IndustrialMaitenance: React.FC = () => {
           <BoxComponentes>
             <AreaComp>
               <GridContainer>
-                <section className="ag-theme-balham">
+                <section className="ag-theme-alpine">
                   <AgGridReact
                     columnDefs={gridColumnDef}
                     rowData={listIndustrialMaitenance}
@@ -308,10 +280,10 @@ const IndustrialMaitenance: React.FC = () => {
               </GridContainer>
             </AreaComp>
           </BoxComponentes>
-        </PageBody>
+        </PageBody> */}
       </PageContainer>
 
-      <Dialog
+      {/* <Dialog
         isOpen={visible}
         closeDialogFn={closeDialog}
         title="Editar Tools"
@@ -335,9 +307,13 @@ const IndustrialMaitenance: React.FC = () => {
             </Form>
           </AreaConsult>
         </Container>
-      </Dialog>
-    </>
+      </Dialog> */}
+    </Wrapper>
   );
 };
 
-export default IndustrialMaitenance;
+export default () => (
+  <ToolsProvider>
+    <IndustrialMaitenance />
+  </ToolsProvider>
+);
