@@ -83,12 +83,10 @@ export const useAuth = () => {
   const signIn = useCallback(
     async (payload: GetAuthorizedCompaniesParams) => {
       const authService = new AuthService();
-      console.log(payload);
       const responseAuthorizedCompanies =
         await authService.getAuthorizedCompanies(payload);
 
       const { success, retorno, errors } = responseAuthorizedCompanies.data;
-      console.log(responseAuthorizedCompanies.data);
       if (!success) {
         // toast.error(`Acesso Negado!! ${errors.response.message}`);
         // yield put(signFailure());
@@ -121,8 +119,6 @@ export const useAuth = () => {
           usr_id: USR_ID,
           usr_tipo: userType,
         });
-
-        console.log("optionsModules", responseOptionsModules);
 
         const optionsEmp = retorno.map((emp: any) => emp);
 

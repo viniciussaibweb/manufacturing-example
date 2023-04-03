@@ -1,8 +1,8 @@
 export interface ToolData {
-  mafeId: number;
-  mafeEmpId: number;
-  mafeUsrId: number;
-  mafeCodigo: number;
-  mafeDtaCad: string;
-  mafeDescricao: string;
+  id: number;
+  companyId: number;
+  userId: number;
+  code: number;
+  dateAt: string;
+  description: string;
 }

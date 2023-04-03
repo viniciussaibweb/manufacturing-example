@@ -18,6 +18,7 @@ import {
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { FormToolData } from "./types";
+import { useLoading } from "@/store/loadingSlice";
 
 interface ToolsContextInterface {
   listIndustrialMaitenance: Array<ToolData>;
@@ -25,8 +26,11 @@ interface ToolsContextInterface {
   filterTools: () => Promise<void>;
   handleExcluir: (mafeId: number) => Promise<void>;
   saveTools: (data: FormToolData) => void;
+  handleEditTool: (id: number, description: string) => void;
   formFilterRef: FormRefType;
-  formCadastroRef: FormRefType;
+  formRegisterRef: FormRefType;
+  tabActive: number;
+  setTabActive: SetStateInterface<number>;
 }
 
 const ToolsContext = createContext<ToolsContextInterface>(
@@ -39,26 +43,40 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     Array<ToolData>
   >([]);
   const formFilterRef = useRef<FormHandles>(null);
-  const formCadastroRef = useRef<FormHandles>(null);
+  const formRegisterRef = useRef<FormHandles>(null);
+  const { setIsLoading } = useLoading();
+
+  const [tabActive, setTabActive] = useState(0);
 
   const schema = Yup.object().shape({
-    mafeDescricao: Yup.string().required("O campo é obrigatório"),
+    description: Yup.string().required("O campo é obrigatório"),
   });
 
   const filterTools = async () => {
-    const mafeDescricao = formFilterRef.current?.getFieldValue("mafeDescricao");
+    const description = formFilterRef.current?.getFieldValue("description");
+    const code = formFilterRef.current?.getFieldValue("code");
 
     try {
-      const res = await toolsService.getAll(mafeDescricao);
-      setListIndustrialMaitenance(res);
+      setIsLoading(true);
+      let res = await toolsService.getAll(
+        String(code).length ? code : description
+      );
+
+      if (res.length) {
+        setListIndustrialMaitenance(res);
+      } else {
+        setListIndustrialMaitenance([]);
+      }
     } catch (err) {
       errorAlertMessage(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleExcluir = async (mafeId: number) => {
     try {
-      toolsService.deleteTool(mafeId);
+      await toolsService.deleteTool(mafeId);
       toast.success("Item deletado com sucesso!");
       filterTools();
     } catch (err) {
@@ -69,18 +87,42 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const handleEditTool = (id: number, description: string) => {
+    setTimeout(() => {
+      formRegisterRef.current?.setFieldValue("code", id);
+      formRegisterRef.current?.setFieldValue("description", description);
+    }, 200);
+
+    setTabActive(1);
+  };
+
   const saveTools = async (formData: FormToolData) => {
     try {
-      const isValid = await makeValidation(schema, formData, formCadastroRef);
+      const isValid = await makeValidation(schema, formData, formRegisterRef);
 
       if (!isValid) {
         return;
       }
-      await toolsService.postTool(formData.description);
-      formCadastroRef.current?.reset();
+
+      setIsLoading(true);
+      if (formData?.code) {
+        await toolsService.patchTool({
+          id: formData?.code,
+          description: formData.description,
+        });
+      } else {
+        await toolsService.postTool({
+          description: formData.description,
+        });
+      }
+
+      toast.success("Item salvo com sucesso!", getToastOptions());
+      formRegisterRef.current?.reset();
       filterTools();
     } catch (err) {
       errorAlertMessage(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,11 +132,14 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
       filterTools: filterTools,
       setListIndustrialMaitenance: setListIndustrialMaitenance,
       handleExcluir: handleExcluir,
+      handleEditTool: handleEditTool,
       formFilterRef: formFilterRef,
-      formCadastroRef: formCadastroRef,
+      formRegisterRef: formRegisterRef,
       saveTools: saveTools,
+      tabActive,
+      setTabActive,
     }),
-    [listIndustrialMaitenance]
+    [listIndustrialMaitenance, tabActive]
   );
 
   return (

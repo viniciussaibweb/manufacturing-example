@@ -251,7 +251,7 @@ input[type="radio"]:checked {
     }
 
     @media ${device.laptopL} {
-      font-size: 16px;
+        font-size: 0.9rem;
       height: 32px;
     }
 
@@ -268,11 +268,11 @@ input[type="radio"]:checked {
 
     svg {
       @media ${device.mobileS} {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
 
       @media ${device.tablet} {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
 
       @media ${device.laptop} {
@@ -1183,6 +1183,7 @@ interface propsBoxComponets {
   maxWd?: string;
   flex?: string;
   wd?: string;
+  gap?: string;
 }
 
 export const BoxComponentes = styled.div<propsBoxComponets>`
@@ -1200,6 +1201,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
   width: ${(props) => props.maxWd || "100%"};
   max-width: ${(props) => props.maxWd};
   align-items: ${(props) => props.algItems};
+  gap: ${(props) => props.gap ?? "0"};
 
   flex: ${(props) => props.flex ?? "unset"};
   /* overflow-y: hidden !important; */
@@ -1214,7 +1216,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     flex-direction: ${(props) =>
       props.fDirection ? props.fDirection : "column"};
     .ag-theme-alpine {
-      height: 50vh !important;
+      /* height: 50vh !important; */
     }
   }
 
@@ -1224,7 +1226,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
 
     .ag-theme-alpine {
-      height: 50vh !important;
+      /* height: 50vh !important; */
     }
   }
 
@@ -1233,7 +1235,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     width: ${(props) => props.wd}%;
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
     .ag-theme-alpine {
-      height: 60vh !important;
+      /* height: 60vh !important; */
     }
   }
 `;
@@ -1628,17 +1630,18 @@ export const ToolbarBtn = styled(ToolbarButton)`
 `;
 
 interface propsRow {
-  jContent: string;
-  flwrap: string;
-  mg: number;
-  mgtop: number;
-  mgbottom: number;
-  pdtop: number;
-  pdbottom: number;
-  pdleft: number;
-  pdright: number;
-  pd: number;
-  maxWd: number;
+  jContent?: string;
+  flwrap?: string;
+  mg?: string;
+  mgtop?: number;
+  mgbottom?: number;
+  pdtop?: number;
+  pdbottom?: number;
+  pdleft?: number;
+  pdright?: number;
+  pd?: number;
+  maxWd?: number;
+  gp?: string;
 }
 
 export const Row = styled.div<propsRow>`
@@ -1656,6 +1659,7 @@ export const Row = styled.div<propsRow>`
   padding: ${(props) => props.pd && props.pd};
   width: ${(props) => props.maxWd || "100%"};
   max-width: ${(props) => props.maxWd};
+  gap: ${({ gp }) => gp ?? "0"};
 `;
 
 interface ToolbarProps {
@@ -1679,9 +1683,10 @@ interface ToolbarProps {
 export const Toolbar = styled(ToolbarContainer)<ToolbarProps>`
   justify-content: space-between;
   margin-bottom: 0;
-  background-color: #543676;
-  color: #fff;
-  height: 28px;
+  background-color: #fafafa;
+  border-bottom: solid 1px #ccc;
+  color: #543676;
+  height: 31px;
 
   .title {
     margin: auto;
@@ -1693,8 +1698,8 @@ export const Toolbar = styled(ToolbarContainer)<ToolbarProps>`
   ${({ colorInverterDefault }) =>
     colorInverterDefault &&
     css`
-      color: #543676;
+      color: #fff;
       border-bottom: 1px solid #543676;
-      background-color: #fff;
+      background-color: #543676;
     `}
 `;

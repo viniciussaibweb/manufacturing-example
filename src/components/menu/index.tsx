@@ -227,8 +227,7 @@ export function Menu() {
         arrayPadronizado.push(itemPrincipal);
       }
     });
-    // console.log('modulos api', arrayModulosApi);
-    // console.log('modulos padronizados menu', arrayPadronizado);
+
     return arrayPadronizado;
   };
 

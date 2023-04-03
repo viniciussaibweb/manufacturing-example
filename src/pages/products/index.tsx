@@ -8,7 +8,6 @@ const Products: React.FC = () => {
     const api = ApiService.getInstance("SAIBWEB");
 
     const res = await api.get("industrial-maintenance/tool");
-    console.log(res);
   };
 
   return (

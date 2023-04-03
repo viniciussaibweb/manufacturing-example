@@ -85,8 +85,6 @@ export default function BotaoModulos() {
       (mod) => mod.label === profile.selectedModule.module
     );
 
-    console.log("modulo", modulo);
-
     if (!modulo) {
       /* Se não tiver módulo selecionado pega o primeiro módulo habilitado */
       if (optModulos.length > 0) {
@@ -144,7 +142,6 @@ export default function BotaoModulos() {
          * porém mantém a referência da rota que está sendo acessada no momento.
          */
         let newRoutePath = pathName;
-        console.log("pathName", pathName);
         if (profile.signed && pathName === "/") {
           newRoutePath = getRotaInicial(objModulo.NOME);
         }
@@ -157,9 +154,7 @@ export default function BotaoModulos() {
           //   id: objModulo.MOD_ID,
           // });
           route.push(newRoutePath);
-          console.log("entrando aqui");
         }
-        console.log("newRoutePath", newRoutePath);
       }
     }
   }
@@ -207,7 +202,6 @@ export default function BotaoModulos() {
   /* Executa sempre que trocar de empresa */
   const codeCompany = useMemo(() => profile.emp_id, [profile.emp_id]);
   useEffect(() => {
-    console.log("render", profile.emp_id);
     setIdEmpresaAtual(Number(profile.emp_id));
     getModulos();
     // eslint-disable-next-line react-hooks/exhaustive-deps

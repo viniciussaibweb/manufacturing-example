@@ -11,6 +11,6 @@ export const Container = styled.div`
   flex: 1;
 
   .tab-item {
-    height: 100%;
+    flex: 1;
   }
 `;

@@ -10,13 +10,14 @@ import { useField } from "@unform/core";
 
 import { InputContainer, FormInput } from "./styles";
 
-interface propsInput {
+interface PropsInput {
   name: string;
   id?: string;
   label?: string;
   type?: string;
   isUppercase?: boolean;
   isRequired?: boolean;
+  disabled?: boolean;
   onChangeExternal?: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value?: string;
@@ -30,7 +31,7 @@ const Input = ({
   isRequired,
   onChangeExternal,
   ...rest
-}: propsInput) => {
+}: PropsInput) => {
   const inputRef = useRef(null);
 
   const { fieldName, defaultValue = "", registerField, error } = useField(name);

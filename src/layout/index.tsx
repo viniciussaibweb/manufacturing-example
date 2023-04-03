@@ -15,9 +15,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 const RootLayout = ({ children }: { children: ReactNode }) => {
   const { authData } = useAuth();
   const path = usePathname();
-  console.log("path", path);
   const Layout = Boolean(authData?.signed) ? LoggedLayout : UnloggedLayout;
-  console.log("authData?.signed", authData?.signed);
 
   const router = useRouter();
 
