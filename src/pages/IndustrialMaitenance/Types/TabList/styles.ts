@@ -1,23 +1,4 @@
 import styled from "styled-components";
-import { Container, ToolbarContainer, ToolbarButton } from "../../../styles/global";
-import { colors } from "../../../styles/colors";
-
-export const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-export const PageContainer = styled(Container)`
-  width: 70%;
-  height: calc(100vh - 170px);
-  margin-top: 40px;
-  border: 1px solid ${colors.primaria_escura};
-  border-radius: 4px;
-  box-shadow: 3px 3px 16px #cacaca;
-
-  display: flex;
-  flex-direction: column;
-`;
 
 export const ToolbarInnerContainer = styled.div`
   width: 100%;
@@ -39,7 +20,7 @@ export const ToolbarInnerContainer = styled.div`
 
 export const PageBody = styled.div`
   width: 100%;
-  height: calc(100vh - 202px);
+  /* height: calc(100vh - 202px); */
   padding-top: 10px;
   padding-left: 10px;
 
@@ -58,15 +39,10 @@ export const FormContainer = styled.div`
   justify-content: flex-start;
   justify-items: left;
 `;
-export const Toolbar = styled(ToolbarContainer)`
-  justify-content: space-between;
-  margin-bottom: 0;
-  background-color: #543676;
-`;
 
 export const GridContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 280px);
+  height: 300px;
   padding: 5px 5px 10px 5px;
   /* overflow: auto; */
 
@@ -74,11 +50,16 @@ export const GridContainer = styled.div`
     width: 100%;
   }
   .ag-theme-alpine {
-    height: calc(100vh - 288px) !important;
+    /* height: calc(100vh - 488px) !important; */
+    height: 25rem;
   }
 `;
-export const ToolbarButtonBack = styled(ToolbarButton)`
-  &:hover {
-    background: #ffff;
-  }
+
+export const WrapperTab = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

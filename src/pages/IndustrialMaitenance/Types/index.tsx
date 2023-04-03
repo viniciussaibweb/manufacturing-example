@@ -1,28 +1,32 @@
-"use client";
 import React, { useEffect } from "react";
-import { FaClipboard } from "react-icons/fa";
 import { PageContainer, Wrapper, ToolbarButtonBack } from "./styles";
 import { Toolbar } from "../../../styles/global";
 import { MdClose, MdSearch } from "react-icons/md";
+import { FaClipboard } from "react-icons/fa";
 import { BootstrapTooltip } from "../../../components/Tooltip/index";
 
-import TabList from "./TabList";
-import { ToolsProvider, useTools } from "@/hooks/IndustrialMaintenance/useTool";
 import Tab from "@/components/Tab";
-import TabRegister from "./TabRegister";
 
-const IndustrialMaitenance: React.FC = () => {
-  const { filterTools, tabActive, setTabActive } = useTools();
+import TabList from "./TabList/index";
+import TabRegister from "./TabRegister/index";
+
+import {
+  useTypes,
+  TypesProvider,
+} from "../../../hooks/IndustrialMaintenance/useTypes/index";
+
+const MaitananceType: React.FC = () => {
+  const { getAllTypes, tabActive, setTabActive } = useTypes();
 
   useEffect(() => {
-    filterTools();
+    getAllTypes();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">FERRAMENTAS</span>
+          <span className="title">TIPOS DE SERVIÇO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -38,7 +42,7 @@ const IndustrialMaitenance: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista ferramentas",
+                label: "Lista tipos",
               },
             },
             {
@@ -56,7 +60,7 @@ const IndustrialMaitenance: React.FC = () => {
 };
 
 export default () => (
-  <ToolsProvider>
-    <IndustrialMaitenance />
-  </ToolsProvider>
+  <TypesProvider>
+    <MaitananceType />
+  </TypesProvider>
 );

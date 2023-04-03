@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Container, ToolbarContainer, ToolbarButton } from "../../../styles/global";
+import { Container, ToolbarButton, ToolbarContainer } from "../../../styles/global";
 import { colors } from "../../../styles/colors";
 
 export const Wrapper = styled.div`
