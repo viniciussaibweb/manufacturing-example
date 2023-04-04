@@ -11,23 +11,22 @@ import TabList from "./TabList/index";
 import TabRegister from "./TabRegister/index";
 
 import {
-  useMaitenanceTypes,
-  MaitananceTypesProvider,
-} from "../../../hooks/IndustrialMaintenance/useMaitenanceTypes";
+  useLocation,
+  LocationProvider,
+} from "../../../hooks/IndustrialMaintenance/useLocation/index";
 
-const MaitananceType: React.FC = () => {
-  const { filterMaitenanceTypes, tabActive, setTabActive } =
-    useMaitenanceTypes();
+const Location: React.FC = () => {
+  const { filterLocation, tabActive, setTabActive } = useLocation();
 
   useEffect(() => {
-    filterMaitenanceTypes();
+    filterLocation();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">TIPOS DE MANUTENÇÃO</span>
+          <span className="title">LOCALIZAÇÂO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -43,7 +42,7 @@ const MaitananceType: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista tipos",
+                label: "Lista localização",
               },
             },
             {
@@ -61,7 +60,7 @@ const MaitananceType: React.FC = () => {
 };
 
 export default () => (
-  <MaitananceTypesProvider>
-    <MaitananceType />
-  </MaitananceTypesProvider>
+  <LocationProvider>
+    <Location />
+  </LocationProvider>
 );

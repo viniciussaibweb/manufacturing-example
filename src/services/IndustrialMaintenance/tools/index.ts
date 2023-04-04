@@ -1,4 +1,4 @@
-import { ApiService, ApiTypes } from "../api";
+import { ApiService, ApiTypes } from "../../api";
 import { ToolData } from "./types";
 
 export class ToolsService {

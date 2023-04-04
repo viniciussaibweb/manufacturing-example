@@ -1,4 +1,6 @@
+import React from "react";
 import Input from "@/components/Input";
+import { Form } from "@unform/web";
 import { BootstrapTooltip } from "@/components/Tooltip";
 import {
   AreaComp,
@@ -6,29 +8,29 @@ import {
   Toolbar,
   ToolbarButton,
 } from "@/styles/global";
-import { Form } from "@unform/web";
+
 import { AgGridReact } from "ag-grid-react";
-import React from "react";
+import { ColDef } from "ag-grid-community";
+import "ag-grid-community/styles/ag-grid.css";
+
 import { MdDelete, MdModeEdit, MdSearch } from "react-icons/md";
 import { PageBody, FormContainer, GridContainer, WrapperTab } from "./styles";
 import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
-import { useTools } from "@/hooks/IndustrialMaintenance/useTool";
-import { ColDef } from "ag-grid-community";
-import "ag-grid-community/styles/ag-grid.css";
-import { ToolData } from "@/services/IndustrialMaintenance/tools/types";
+import { useLocation } from "@/hooks/IndustrialMaintenance/useLocation";
+import { LocationData } from "@/services/IndustrialMaintenance/Location/types";
 
 interface CellRendererParams {
-  data: ToolData;
+  data: LocationData;
 }
 
 const TabList: React.FC = () => {
   const {
-    listIndustrialMaitenance,
-    filterTools,
-    handleExcluir,
+    listLocation,
+    deleteLocation,
+    handleEditLocation,
+    filterLocation,
     formFilterRef,
-    handleEditTool,
-  } = useTools();
+  } = useLocation();
 
   const gridColumnDef: ColDef[] = [
     {
@@ -43,7 +45,7 @@ const TabList: React.FC = () => {
             <button
               type="button"
               className="grid-button"
-              onClick={() => handleExcluir(params.data.id)}
+              onClick={() => deleteLocation(params.data.id)}
             >
               <MdDelete size={20} color="#61098a" />
             </button>
@@ -53,7 +55,7 @@ const TabList: React.FC = () => {
               type="button"
               className="grid-button"
               onClick={() =>
-                handleEditTool(params.data.id, params.data.description)
+                handleEditLocation(params.data.id, params.data.description)
               }
             >
               <MdModeEdit size={20} color="#61098a" />
@@ -89,14 +91,14 @@ const TabList: React.FC = () => {
     <WrapperTab>
       <Toolbar colorInverterDefault>
         <BootstrapTooltip title="Pesquisar" placement="bottom">
-          <ToolbarButton type="button" onClick={filterTools}>
+          <ToolbarButton type="button" onClick={filterLocation}>
             <MdSearch size={25} color="#fff" />
           </ToolbarButton>
         </BootstrapTooltip>
       </Toolbar>
       <PageBody>
         <FormContainer>
-          <Form ref={formFilterRef} onSubmit={filterTools}>
+          <Form ref={formFilterRef} onSubmit={filterLocation}>
             <BoxComponentes gap="10px">
               <AreaComp wd="20" noPd>
                 <Input label="Código:" type="number" name="code" />
@@ -114,7 +116,7 @@ const TabList: React.FC = () => {
               <div className="ag-theme-alpine">
                 <AgGridReact
                   columnDefs={gridColumnDef}
-                  rowData={listIndustrialMaitenance}
+                  rowData={listLocation}
                   rowSelection="single"
                   animateRows
                   gridOptions={{ localeText: AgGridTranslation }}

@@ -1,6 +1,6 @@
 import { FormRefType, SetStateInterface } from "@/interfaces/default";
-import { ToolsService } from "@/services/IndustrialMaintenance/tools";
-import { ToolData } from "@/services/IndustrialMaintenance/tools/types";
+import { PositionOcupationService } from "@/services/IndustrialMaintenance/PositionsOcupation";
+import { PositionsOcupationData } from "@/services/IndustrialMaintenance/PositionsOcupation/types";
 import {
   errorAlertMessage,
   getToastOptions,
@@ -17,31 +17,38 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { FormToolData } from "./types";
+import { FormPostionsOcupationData } from "./types";
 import { useLoading } from "@/store/loadingSlice";
 
-interface ToolsContextInterface {
-  listIndustrialMaitenance: Array<ToolData>;
-  setListIndustrialMaitenance: SetStateInterface<Array<ToolData>>;
-  filterTools: () => Promise<void>;
-  handleExcluir: (mafeId: number) => Promise<void>;
-  saveTools: (data: FormToolData) => void;
-  handleEditTool: (id: number, description: string) => void;
+interface PositionsOcupationContextInterface {
+  listPositionsOcupation: Array<PositionsOcupationData>;
+  setListPositionsOcupation: SetStateInterface<Array<PositionsOcupationData>>;
+  filterPositionsOcupation: () => Promise<void>;
+  deletePositionsOcupation: (id: number) => Promise<void>;
+  savePositionsOcupation: (data: FormPostionsOcupationData) => void;
+  handleEditPositionOcupation: (id: number, description: string) => void;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
   setTabActive: SetStateInterface<number>;
 }
 
-const ToolsContext = createContext<ToolsContextInterface>(
-  {} as ToolsContextInterface
-);
+const PositionsOcupationContext =
+  createContext<PositionsOcupationContextInterface>(
+    {} as PositionsOcupationContextInterface
+  );
 
-export function ToolsProvider({ children }: { children: ReactNode }) {
-  const toolsService = new ToolsService();
-  const [listIndustrialMaitenance, setListIndustrialMaitenance] = useState<
-    Array<ToolData>
+export function PositionsOcupationProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const positionsOcupationService = new PositionOcupationService();
+
+  const [listPositionsOcupation, setListPositionsOcupation] = useState<
+    Array<PositionsOcupationData>
   >([]);
+
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -54,20 +61,20 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
       .max(99, "O campo não pode ter mais de 100 caracteres"),
   });
 
-  const filterTools = async () => {
+  const filterPositionsOcupation = async () => {
     const description = formFilterRef.current?.getFieldValue("description");
     const code = formFilterRef.current?.getFieldValue("code");
 
     try {
       setIsLoading(true);
-      let res = await toolsService.getAll(
+      let response = await positionsOcupationService.getAll(
         String(code).length ? code : description
       );
 
-      if (res.length) {
-        setListIndustrialMaitenance(res);
+      if (response.length) {
+        setListPositionsOcupation(response);
       } else {
-        setListIndustrialMaitenance([]);
+        setListPositionsOcupation([]);
       }
     } catch (err) {
       errorAlertMessage(err);
@@ -76,11 +83,11 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleExcluir = async (mafeId: number) => {
+  const deletePositionsOcupation = async (id: number) => {
     try {
-      await toolsService.deleteTool(mafeId);
+      await positionsOcupationService.deletePositionOcupation(id);
       toast.success("Item deletado com sucesso!");
-      filterTools();
+      filterPositionsOcupation();
     } catch (err) {
       toast.error(
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
@@ -89,7 +96,7 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleEditTool = (id: number, description: string) => {
+  const handleEditPositionOcupation = (id: number, description: string) => {
     setTimeout(() => {
       formRegisterRef.current?.setFieldValue("code", id);
       formRegisterRef.current?.setFieldValue("description", description);
@@ -98,7 +105,9 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     setTabActive(1);
   };
 
-  const saveTools = async (formData: FormToolData) => {
+  const savePositionsOcupation = async (
+    formData: FormPostionsOcupationData
+  ) => {
     try {
       const isValid = await makeValidation(schema, formData, formRegisterRef);
 
@@ -108,19 +117,19 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
 
       setIsLoading(true);
       if (formData?.code) {
-        await toolsService.patchTool({
+        await positionsOcupationService.patchPositionOcupation({
           id: formData?.code,
           description: formData.description,
         });
       } else {
-        await toolsService.postTool({
+        await positionsOcupationService.postPositionOcupation({
           description: formData.description,
         });
       }
 
       toast.success("Item salvo com sucesso!", getToastOptions());
       formRegisterRef.current?.reset();
-      filterTools();
+      filterPositionsOcupation();
     } catch (err) {
       errorAlertMessage(err);
     } finally {
@@ -130,27 +139,29 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      listIndustrialMaitenance: listIndustrialMaitenance,
-      filterTools: filterTools,
-      setListIndustrialMaitenance: setListIndustrialMaitenance,
-      handleExcluir: handleExcluir,
-      handleEditTool: handleEditTool,
+      listPositionsOcupation: listPositionsOcupation,
       formFilterRef: formFilterRef,
       formRegisterRef: formRegisterRef,
-      saveTools: saveTools,
       tabActive,
+      filterPositionsOcupation: filterPositionsOcupation,
+      setListPositionsOcupation: setListPositionsOcupation,
+      deletePositionsOcupation: deletePositionsOcupation,
+      handleEditPositionOcupation: handleEditPositionOcupation,
+      savePositionsOcupation: savePositionsOcupation,
       setTabActive,
     }),
-    [listIndustrialMaitenance, tabActive]
+    [listPositionsOcupation, tabActive]
   );
 
   return (
-    <ToolsContext.Provider value={value}>{children}</ToolsContext.Provider>
+    <PositionsOcupationContext.Provider value={value}>
+      {children}
+    </PositionsOcupationContext.Provider>
   );
 }
 
-export function useTools() {
-  const context = useContext(ToolsContext);
+export function usePositionOcupation() {
+  const context = useContext(PositionsOcupationContext);
 
   return context;
 }

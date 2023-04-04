@@ -1,4 +1,4 @@
-export interface PositionOcupationData {
+export interface PositionsOcupationData {
   id: number,
   companyId: number,
   code: number,

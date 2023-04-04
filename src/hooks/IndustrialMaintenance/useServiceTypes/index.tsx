@@ -1,6 +1,6 @@
 import { FormRefType, SetStateInterface } from "@/interfaces/default";
-import { TypeService } from "@/services/ServiceType";
-import { TypeData } from "@/services/ServiceType/types";
+import { TypeService } from "@/services/IndustrialMaintenance/ServiceType";
+import { TypeData } from "@/services/IndustrialMaintenance/ServiceType/types";
 
 import {
   createContext,

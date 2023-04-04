@@ -1,6 +1,6 @@
 import { FormRefType, SetStateInterface } from "@/interfaces/default";
-import { MaintenaceTypeService } from "@/services/IndustrialMaintenance/MaintenanceType";
-import { MaintenaceTypeData } from "@/services/IndustrialMaintenance/MaintenanceType/types";
+import { LocationService } from "@/services/IndustrialMaintenance/Location";
+import { LocationData } from "@/services/IndustrialMaintenance/Location/types";
 
 import {
   createContext,
@@ -23,29 +23,27 @@ import {
 
 import { FormHandles } from "@unform/core";
 
-interface TypesContextInterface {
-  listMaitenanceType: Array<MaintenaceTypeData>;
-  setListMaitenanceType: SetStateInterface<Array<MaintenaceTypeData>>;
-  filterMaitenanceTypes: () => Promise<void>;
-  deleteMaitenanceTypes: (id: number) => Promise<void>;
-  saveMaitenanceTypes: (data: MaintenaceTypeData) => void;
-  handleEditMaitenanceTypes: (id: number, description: string) => void;
+interface LocationContextInterface {
+  listLocation: Array<LocationData>;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
+  setListLocation: SetStateInterface<Array<LocationData>>;
+  filterLocation: () => Promise<void>;
+  deleteLocation: (id: number) => Promise<void>;
+  saveLocation: (data: LocationData) => void;
+  handleEditLocation: (id: number, description: string) => void;
   setTabActive: SetStateInterface<number>;
 }
 
-const MaitananceTypesContext = createContext<TypesContextInterface>(
-  {} as TypesContextInterface
+const LocationContext = createContext<LocationContextInterface>(
+  {} as LocationContextInterface
 );
 
-export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
-  const maitananceTypesService = new MaintenaceTypeService();
+export function LocationProvider({ children }: { children: ReactNode }) {
+  const locationService = new LocationService();
 
-  const [listMaitenanceType, setListMaitenanceType] = useState<
-    Array<MaintenaceTypeData>
-  >([]);
+  const [listLocation, setListLocation] = useState<Array<LocationData>>([]);
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -58,7 +56,7 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
       .max(99, "O campo não pode ter mais de 100 caracteres"),
   });
 
-  const saveMaitenanceTypes = async (formData: MaintenaceTypeData) => {
+  const saveLocation = async (formData: LocationData) => {
     try {
       const isValid = await makeValidation(schema, formData, formRegisterRef);
 
@@ -68,19 +66,19 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
 
       if (formData?.code) {
-        await maitananceTypesService.patchMaitenanceType({
+        await locationService.patchLocation({
           id: formData?.code,
           description: formData.description,
         });
       } else {
-        await maitananceTypesService.postMaitenanceType({
+        await locationService.postLocation({
           description: formData.description,
         });
       }
 
       toast.success("Item salvo com sucesso!", getToastOptions());
       formRegisterRef.current?.reset();
-      filterMaitenanceTypes();
+      filterLocation();
     } catch (err) {
       errorAlertMessage(err);
     } finally {
@@ -88,21 +86,21 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const filterMaitenanceTypes = async () => {
+  const filterLocation = async () => {
     const description = formFilterRef.current?.getFieldValue("description");
     const code = formFilterRef.current?.getFieldValue("code");
 
     try {
       setIsLoading(true);
 
-      let response = await maitananceTypesService.getAll(
+      let response = await locationService.getAll(
         String(code).length ? code : description
       );
 
       if (response.length) {
-        setListMaitenanceType(response);
+        setListLocation(response);
       } else {
-        setListMaitenanceType([]);
+        setListLocation([]);
       }
     } catch (err) {
       errorAlertMessage(err);
@@ -111,7 +109,7 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleEditMaitenanceTypes = (id: number, description: string) => {
+  const handleEditLocation = (id: number, description: string) => {
     setTimeout(() => {
       formRegisterRef.current?.setFieldValue("code", id);
       formRegisterRef.current?.setFieldValue("description", description);
@@ -120,13 +118,13 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
     setTabActive(1);
   };
 
-  const deleteMaitenanceTypes = async (Id: number) => {
+  const deleteLocation = async (id: number) => {
     try {
       setIsLoading(true);
-      await maitananceTypesService.deleteMaitenanceType(Id);
+      await locationService.deleteLocation(id);
 
       toast.success("Item deletado com sucesso!");
-      filterMaitenanceTypes();
+      filterLocation();
     } catch (err) {
       toast.error(
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
@@ -138,28 +136,28 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
   };
   const value = useMemo(
     () => ({
-      listMaitenanceType: listMaitenanceType,
-      setListMaitenanceType: setListMaitenanceType,
-      deleteMaitenanceTypes: deleteMaitenanceTypes,
-      handleEditMaitenanceTypes: handleEditMaitenanceTypes,
+      listLocation: listLocation,
       formFilterRef: formFilterRef,
       formRegisterRef: formRegisterRef,
-      saveMaitenanceTypes: saveMaitenanceTypes,
       tabActive,
+      setListLocation: setListLocation,
+      deleteLocation: deleteLocation,
+      handleEditLocation: handleEditLocation,
+      saveLocation: saveLocation,
       setTabActive,
-      filterMaitenanceTypes: filterMaitenanceTypes,
+      filterLocation: filterLocation,
     }),
-    [listMaitenanceType, tabActive]
+    [listLocation, tabActive]
   );
   return (
-    <MaitananceTypesContext.Provider value={value}>
+    <LocationContext.Provider value={value}>
       {children}
-    </MaitananceTypesContext.Provider>
+    </LocationContext.Provider>
   );
 }
 
-export function useMaitenanceTypes() {
-  const context = useContext(MaitananceTypesContext);
+export function useLocation() {
+  const context = useContext(LocationContext);
 
   return context;
 }

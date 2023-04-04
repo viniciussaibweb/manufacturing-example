@@ -18,7 +18,7 @@ import { PageBody, FormContainer, GridContainer, WrapperTab } from "./styles";
 import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
 
 import { useMaitenanceTypes } from "@/hooks/IndustrialMaintenance/useMaitenanceTypes";
-import { MaintenaceTypeData } from "@/services/MaitenanceType/types";
+import { MaintenaceTypeData } from "@/services/IndustrialMaintenance/MaintenanceType/types";
 
 interface CellRendererParams {
   data: MaintenaceTypeData;
@@ -29,7 +29,7 @@ const TabList: React.FC = () => {
     listMaitenanceType,
     deleteMaitenanceTypes,
     handleEditMaitenanceTypes,
-    getAllMaitenanceTypes,
+    filterMaitenanceTypes,
     formFilterRef,
   } = useMaitenanceTypes();
 
@@ -95,14 +95,14 @@ const TabList: React.FC = () => {
     <WrapperTab>
       <Toolbar colorInverterDefault>
         <BootstrapTooltip title="Pesquisar" placement="bottom">
-          <ToolbarButton type="button" onClick={getAllMaitenanceTypes}>
+          <ToolbarButton type="button" onClick={filterMaitenanceTypes}>
             <MdSearch size={25} color="#fff" />
           </ToolbarButton>
         </BootstrapTooltip>
       </Toolbar>
       <PageBody>
         <FormContainer>
-          <Form ref={formFilterRef} onSubmit={getAllMaitenanceTypes}>
+          <Form ref={formFilterRef} onSubmit={filterMaitenanceTypes}>
             <BoxComponentes gap="10px">
               <AreaComp wd="20" noPd>
                 <Input label="Código:" type="number" name="code" />

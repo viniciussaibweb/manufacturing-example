@@ -17,7 +17,7 @@ import { MdDelete, MdModeEdit, MdSearch } from "react-icons/md";
 import { PageBody, FormContainer, GridContainer, WrapperTab } from "./styles";
 import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
 import { useServiceTypes } from "@/hooks/IndustrialMaintenance/useServiceTypes";
-import { TypeData } from "@/services/ServiceType/types";
+import { TypeData } from "@/services/IndustrialMaintenance/ServiceType/types";
 
 interface CellRendererParams {
   data: TypeData;
