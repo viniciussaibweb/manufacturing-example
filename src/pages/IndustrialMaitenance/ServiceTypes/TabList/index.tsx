@@ -16,7 +16,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import { MdDelete, MdModeEdit, MdSearch } from "react-icons/md";
 import { PageBody, FormContainer, GridContainer, WrapperTab } from "./styles";
 import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
-import { useTypes } from "@/hooks/IndustrialMaintenance/useTypes";
+import { useServiceTypes } from "@/hooks/IndustrialMaintenance/useServiceTypes";
 import { TypeData } from "@/services/ServiceType/types";
 
 interface CellRendererParams {
@@ -28,9 +28,9 @@ const TabList: React.FC = () => {
     listMaitenanceType,
     deleteTypes,
     handleEditTypes,
-    filterTypes,
+    getAllTypes,
     formFilterRef,
-  } = useTypes();
+  } = useServiceTypes();
 
   const gridColumnDef: ColDef[] = [
     {
@@ -91,14 +91,14 @@ const TabList: React.FC = () => {
     <WrapperTab>
       <Toolbar colorInverterDefault>
         <BootstrapTooltip title="Pesquisar" placement="bottom">
-          <ToolbarButton type="button" onClick={filterTypes}>
+          <ToolbarButton type="button" onClick={getAllTypes}>
             <MdSearch size={25} color="#fff" />
           </ToolbarButton>
         </BootstrapTooltip>
       </Toolbar>
       <PageBody>
         <FormContainer>
-          <Form ref={formFilterRef} onSubmit={filterTypes}>
+          <Form ref={formFilterRef} onSubmit={getAllTypes}>
             <BoxComponentes gap="10px">
               <AreaComp wd="20" noPd>
                 <Input label="Código:" type="number" name="code" />

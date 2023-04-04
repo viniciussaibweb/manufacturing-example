@@ -5,12 +5,12 @@ import { AreaComp, Row, Toolbar, ToolbarButton } from "@/styles/global";
 
 import { MdSave } from "react-icons/md";
 import { BootstrapTooltip } from "@/components/Tooltip";
-import { useTypes } from "@/hooks/IndustrialMaintenance/useTypes";
+import { useMaitenanceTypes } from "@/hooks/IndustrialMaintenance/useMaitenanceTypes";
 
 import Input from "@/components/Input";
 
 const TabRegister: React.FC = () => {
-  const { formRegisterRef, saveTypes } = useTypes();
+  const { formRegisterRef, saveMaitenanceTypes } = useMaitenanceTypes();
   return (
     <S.Container>
       <Toolbar colorInverterDefault>
@@ -24,13 +24,18 @@ const TabRegister: React.FC = () => {
         </BootstrapTooltip>
       </Toolbar>
 
-      <Form ref={formRegisterRef} onSubmit={saveTypes}>
+      <Form ref={formRegisterRef} onSubmit={saveMaitenanceTypes}>
         <Row gp="10px" mg="10px 0">
           <AreaComp wd="20" noPd>
             <Input label="Código:" type="text" name="code" disabled />
           </AreaComp>
           <AreaComp wd="80" noPd>
-            <Input label="Descrição:" type="text" name="description" />
+            <Input
+              maxLength={100}
+              label="Descrição:"
+              type="text"
+              name="description"
+            />
           </AreaComp>
         </Row>
       </Form>

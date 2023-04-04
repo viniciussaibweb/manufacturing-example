@@ -5,12 +5,8 @@ export class TypeService {
   private api = ApiService.getInstance(ApiTypes.MAINTENANCE);
 
 
-  async getAll(): Promise<Array<TypeData>> {
-    const response = await this.api.get(`/industrial-maintenance/service-type`)
-    return response.data;
-  }
 
-  async getOneFilter(filter?: string): Promise<Array<TypeData>> {
+  async getAll(filter?: string): Promise<Array<TypeData>> {
     const params = {
       filter: filter,
     };

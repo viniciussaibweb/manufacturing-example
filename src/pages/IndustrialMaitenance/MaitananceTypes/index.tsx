@@ -11,22 +11,23 @@ import TabList from "./TabList/index";
 import TabRegister from "./TabRegister/index";
 
 import {
-  useTypes,
-  TypesProvider,
-} from "../../../hooks/IndustrialMaintenance/useTypes/index";
+  useMaitenanceTypes,
+  MaitananceTypesProvider,
+} from "../../../hooks/IndustrialMaintenance/useMaitenanceTypes";
 
 const MaitananceType: React.FC = () => {
-  const { getAllTypes, tabActive, setTabActive } = useTypes();
+  const { getAllMaitenanceTypes, tabActive, setTabActive } =
+    useMaitenanceTypes();
 
   useEffect(() => {
-    getAllTypes();
+    getAllMaitenanceTypes();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">TIPOS DE SERVIÇO</span>
+          <span className="title">TIPOS DE MANUTENÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -60,7 +61,7 @@ const MaitananceType: React.FC = () => {
 };
 
 export default () => (
-  <TypesProvider>
+  <MaitananceTypesProvider>
     <MaitananceType />
-  </TypesProvider>
+  </MaitananceTypesProvider>
 );

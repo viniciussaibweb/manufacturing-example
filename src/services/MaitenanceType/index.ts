@@ -4,8 +4,13 @@ import { MaintenaceTypeData } from "./types";
 export class MaintenaceTypeService {
   private api = ApiService.getInstance(ApiTypes.MAINTENANCE)
 
-  async getAll(description?: string): Promise<Array<MaintenaceTypeData>> {
-    const response = await this.api.get(`/industrial-maintenance/maintenance-type?filter=${description}`);
+  async getAll(filter?: string): Promise<Array<MaintenaceTypeData>> {
+    const params = {
+      filter: filter,
+    };
+    const response = await this.api.get(`/industrial-maintenance/maintenance-type`, {
+      params: params,
+    });
 
     return response.data;
   }
@@ -14,21 +19,20 @@ export class MaintenaceTypeService {
     return (await this.api.delete(`/industrial-maintenance/maintenance-type/${id}`)).data
   }
 
-  async postMaitenanceType(description: string) {
+  async postMaitenanceType(paramsMaitenanceTypes: { id?: number; description: string }) {
     const objRequest = {
-      description: description,
+      description: paramsMaitenanceTypes.description,
     }
 
-    return (await this.api.post("/industrial-maintenance/service-type")).data
+    return (await this.api.post("/industrial-maintenance/maintenance-type", objRequest)).data
   }
-  async patchMaitenanceType(params: MaintenaceTypeData) {
-    const id = params.id;
+  async patchMaitenanceType(paramsMaitenanceTypes: { id?: number; description: string }) {
 
     const objRequest = {
-      description: params.description
+      description: paramsMaitenanceTypes.description
     }
 
-    const response = await this.api.patch(`/industrial-maintenance/tool/${id}`, objRequest)
+    const response = await this.api.patch(`/industrial-maintenance/maintenance-type/${paramsMaitenanceTypes.id}`, objRequest)
     return response
   }
 }

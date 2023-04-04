@@ -26,7 +26,6 @@ import { FormHandles } from "@unform/core";
 interface TypesContextInterface {
   listMaitenanceType: Array<TypeData>;
   setListMaitenanceType: SetStateInterface<Array<TypeData>>;
-  filterTypes: () => Promise<void>;
   getAllTypes: () => Promise<void>;
   deleteTypes: (mafeId: number) => Promise<void>;
   saveTypes: (data: TypeData) => void;
@@ -37,11 +36,11 @@ interface TypesContextInterface {
   setTabActive: SetStateInterface<number>;
 }
 
-const TypesContext = createContext<TypesContextInterface>(
+const ServiceTypesContext = createContext<TypesContextInterface>(
   {} as TypesContextInterface
 );
 
-export function TypesProvider({ children }: { children: ReactNode }) {
+export function ServiceTypesProvider({ children }: { children: ReactNode }) {
   const typesService = new TypeService();
 
   const [listMaitenanceType, setListMaitenanceType] = useState<Array<TypeData>>(
@@ -54,20 +53,10 @@ export function TypesProvider({ children }: { children: ReactNode }) {
   const [tabActive, setTabActive] = useState(0);
 
   const schema = Yup.object().shape({
-    description: Yup.string().required("O campo é obrigatório"),
+    description: Yup.string()
+      .required("O campo é obrigatório")
+      .max(99, "O campo não pode ter mais de 100 caracteres"),
   });
-
-  const getAllTypes = async () => {
-    try {
-      setIsLoading(true);
-      const response = await typesService.getAll();
-      setListMaitenanceType(response);
-    } catch (err) {
-      errorAlertMessage(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const saveTypes = async (formData: TypeData) => {
     try {
@@ -91,7 +80,7 @@ export function TypesProvider({ children }: { children: ReactNode }) {
 
       toast.success("Item salvo com sucesso!", getToastOptions());
       formRegisterRef.current?.reset();
-      filterTypes();
+      getAllTypes();
     } catch (err) {
       errorAlertMessage(err);
     } finally {
@@ -99,14 +88,14 @@ export function TypesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const filterTypes = async () => {
+  const getAllTypes = async () => {
     const description = formFilterRef.current?.getFieldValue("description");
     const code = formFilterRef.current?.getFieldValue("code");
 
     try {
       setIsLoading(true);
 
-      let response = await typesService.getOneFilter(
+      let response = await typesService.getAll(
         String(code).length ? code : description
       );
 
@@ -150,7 +139,6 @@ export function TypesProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       listMaitenanceType: listMaitenanceType,
-      filterTypes: filterTypes,
       setListMaitenanceType: setListMaitenanceType,
       deleteTypes: deleteTypes,
       handleEditTypes: handleEditTypes,
@@ -164,12 +152,14 @@ export function TypesProvider({ children }: { children: ReactNode }) {
     [listMaitenanceType, tabActive]
   );
   return (
-    <TypesContext.Provider value={value}>{children}</TypesContext.Provider>
+    <ServiceTypesContext.Provider value={value}>
+      {children}
+    </ServiceTypesContext.Provider>
   );
 }
 
-export function useTypes() {
-  const context = useContext(TypesContext);
+export function useServiceTypes() {
+  const context = useContext(ServiceTypesContext);
 
   return context;
 }
