@@ -58,7 +58,8 @@ const TabList: React.FC = () => {
               onClick={() =>
                 handleEditMaitenanceTypes(
                   params.data.id,
-                  params.data.description
+                  params.data.description,
+                  params.data.code
                 )
               }
             >

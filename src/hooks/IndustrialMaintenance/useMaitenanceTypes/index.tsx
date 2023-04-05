@@ -29,7 +29,11 @@ interface TypesContextInterface {
   filterMaitenanceTypes: () => Promise<void>;
   deleteMaitenanceTypes: (id: number) => Promise<void>;
   saveMaitenanceTypes: (data: MaintenaceTypeData) => void;
-  handleEditMaitenanceTypes: (id: number, description: string) => void;
+  handleEditMaitenanceTypes: (
+    id: number,
+    description: string,
+    code: number
+  ) => void;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
@@ -46,6 +50,7 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
   const [listMaitenanceType, setListMaitenanceType] = useState<
     Array<MaintenaceTypeData>
   >([]);
+  const [idEdit, setIdEdit] = useState<number>();
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -69,7 +74,7 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
 
       if (formData?.code) {
         await maitananceTypesService.patchMaitenanceType({
-          id: formData?.code,
+          id: idEdit,
           description: formData.description,
         });
       } else {
@@ -111,9 +116,14 @@ export function MaitananceTypesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleEditMaitenanceTypes = (id: number, description: string) => {
+  const handleEditMaitenanceTypes = (
+    id: number,
+    description: string,
+    code: number
+  ) => {
+    setIdEdit(id);
     setTimeout(() => {
-      formRegisterRef.current?.setFieldValue("code", id);
+      formRegisterRef.current?.setFieldValue("code", code);
       formRegisterRef.current?.setFieldValue("description", description);
     }, 200);
 

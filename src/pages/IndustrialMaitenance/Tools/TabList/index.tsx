@@ -53,7 +53,11 @@ const TabList: React.FC = () => {
               type="button"
               className="grid-button"
               onClick={() =>
-                handleEditTool(params.data.id, params.data.description)
+                handleEditTool(
+                  params.data.id,
+                  params.data.description,
+                  params.data.code
+                )
               }
             >
               <MdModeEdit size={20} color="#61098a" />

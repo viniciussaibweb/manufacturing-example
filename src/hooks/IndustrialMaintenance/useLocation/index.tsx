@@ -32,7 +32,7 @@ interface LocationContextInterface {
   filterLocation: () => Promise<void>;
   deleteLocation: (id: number) => Promise<void>;
   saveLocation: (data: LocationData) => void;
-  handleEditLocation: (id: number, description: string) => void;
+  handleEditLocation: (id: number, description: string, code: number) => void;
   setTabActive: SetStateInterface<number>;
 }
 
@@ -44,6 +44,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const locationService = new LocationService();
 
   const [listLocation, setListLocation] = useState<Array<LocationData>>([]);
+  const [idEdit, setIdEdit] = useState<number>();
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -67,7 +68,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 
       if (formData?.code) {
         await locationService.patchLocation({
-          id: formData?.code,
+          id: idEdit,
           description: formData.description,
         });
       } else {
@@ -109,9 +110,14 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleEditLocation = (id: number, description: string) => {
+  const handleEditLocation = (
+    id: number,
+    description: string,
+    code: number
+  ) => {
+    setIdEdit(id);
     setTimeout(() => {
-      formRegisterRef.current?.setFieldValue("code", id);
+      formRegisterRef.current?.setFieldValue("code", code);
       formRegisterRef.current?.setFieldValue("description", description);
     }, 200);
 

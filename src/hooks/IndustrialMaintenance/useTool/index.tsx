@@ -26,7 +26,7 @@ interface ToolsContextInterface {
   filterTools: () => Promise<void>;
   handleExcluir: (mafeId: number) => Promise<void>;
   saveTools: (data: FormToolData) => void;
-  handleEditTool: (id: number, description: string) => void;
+  handleEditTool: (id: number, description: string, code: number) => void;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
@@ -42,6 +42,7 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
   const [listIndustrialMaitenance, setListIndustrialMaitenance] = useState<
     Array<ToolData>
   >([]);
+  const [idEdit, setIdEdit] = useState<number>();
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -89,9 +90,10 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const handleEditTool = (id: number, description: string) => {
+  const handleEditTool = (id: number, description: string, code: number) => {
+    setIdEdit(id);
     setTimeout(() => {
-      formRegisterRef.current?.setFieldValue("code", id);
+      formRegisterRef.current?.setFieldValue("code", code);
       formRegisterRef.current?.setFieldValue("description", description);
     }, 200);
 
@@ -109,7 +111,7 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       if (formData?.code) {
         await toolsService.patchTool({
-          id: formData?.code,
+          id: idEdit,
           description: formData.description,
         });
       } else {

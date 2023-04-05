@@ -26,7 +26,11 @@ interface PositionsOcupationContextInterface {
   filterPositionsOcupation: () => Promise<void>;
   deletePositionsOcupation: (id: number) => Promise<void>;
   savePositionsOcupation: (data: FormPostionsOcupationData) => void;
-  handleEditPositionOcupation: (id: number, description: string) => void;
+  handleEditPositionOcupation: (
+    id: number,
+    description: string,
+    code: number
+  ) => void;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
@@ -48,6 +52,8 @@ export function PositionsOcupationProvider({
   const [listPositionsOcupation, setListPositionsOcupation] = useState<
     Array<PositionsOcupationData>
   >([]);
+
+  const [idEdit, setIdEdit] = useState<number>();
 
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
@@ -96,9 +102,14 @@ export function PositionsOcupationProvider({
     }
   };
 
-  const handleEditPositionOcupation = (id: number, description: string) => {
+  const handleEditPositionOcupation = (
+    id: number,
+    description: string,
+    code: number
+  ) => {
+    setIdEdit(id);
     setTimeout(() => {
-      formRegisterRef.current?.setFieldValue("code", id);
+      formRegisterRef.current?.setFieldValue("code", code);
       formRegisterRef.current?.setFieldValue("description", description);
     }, 200);
 
@@ -118,7 +129,7 @@ export function PositionsOcupationProvider({
       setIsLoading(true);
       if (formData?.code) {
         await positionsOcupationService.patchPositionOcupation({
-          id: formData?.code,
+          id: idEdit,
           description: formData.description,
         });
       } else {

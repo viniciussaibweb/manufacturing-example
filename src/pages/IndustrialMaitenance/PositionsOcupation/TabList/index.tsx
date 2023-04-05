@@ -57,7 +57,8 @@ const TabList: React.FC = () => {
               onClick={() =>
                 handleEditPositionOcupation(
                   params.data.id,
-                  params.data.description
+                  params.data.description,
+                  params.data.code
                 )
               }
             >

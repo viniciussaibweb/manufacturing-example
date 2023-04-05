@@ -24,12 +24,12 @@ import {
 import { FormHandles } from "@unform/core";
 
 interface TypesContextInterface {
-  listMaitenanceType: Array<TypeData>;
-  setListMaitenanceType: SetStateInterface<Array<TypeData>>;
+  listServiceType: Array<TypeData>;
+  setListServiceType: SetStateInterface<Array<TypeData>>;
   getAllTypes: () => Promise<void>;
   deleteTypes: (mafeId: number) => Promise<void>;
   saveTypes: (data: TypeData) => void;
-  handleEditTypes: (id: number, description: string) => void;
+  handleEditTypes: (id: number, description: string, code: number) => void;
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
@@ -43,9 +43,8 @@ const ServiceTypesContext = createContext<TypesContextInterface>(
 export function ServiceTypesProvider({ children }: { children: ReactNode }) {
   const typesService = new TypeService();
 
-  const [listMaitenanceType, setListMaitenanceType] = useState<Array<TypeData>>(
-    []
-  );
+  const [listServiceType, setListServiceType] = useState<Array<TypeData>>([]);
+  const [idEdit, setIdEdit] = useState<number>();
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
@@ -58,6 +57,16 @@ export function ServiceTypesProvider({ children }: { children: ReactNode }) {
       .max(99, "O campo não pode ter mais de 100 caracteres"),
   });
 
+  const handleEditTypes = (id: number, description: string, code: number) => {
+    setIdEdit(id);
+    setTimeout(() => {
+      formRegisterRef.current?.setFieldValue("code", code);
+      formRegisterRef.current?.setFieldValue("description", description);
+    }, 200);
+
+    setTabActive(1);
+  };
+
   const saveTypes = async (formData: TypeData) => {
     try {
       const isValid = await makeValidation(schema, formData, formRegisterRef);
@@ -69,7 +78,7 @@ export function ServiceTypesProvider({ children }: { children: ReactNode }) {
 
       if (formData?.code) {
         await typesService.patchServiceType({
-          id: formData?.code,
+          id: idEdit,
           description: formData.description,
         });
       } else {
@@ -100,24 +109,15 @@ export function ServiceTypesProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.length) {
-        setListMaitenanceType(response);
+        setListServiceType(response);
       } else {
-        setListMaitenanceType([]);
+        setListServiceType([]);
       }
     } catch (err) {
       errorAlertMessage(err);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleEditTypes = (id: number, description: string) => {
-    setTimeout(() => {
-      formRegisterRef.current?.setFieldValue("code", id);
-      formRegisterRef.current?.setFieldValue("description", description);
-    }, 200);
-
-    setTabActive(1);
   };
 
   const deleteTypes = async (Id: number) => {
@@ -138,8 +138,8 @@ export function ServiceTypesProvider({ children }: { children: ReactNode }) {
   };
   const value = useMemo(
     () => ({
-      listMaitenanceType: listMaitenanceType,
-      setListMaitenanceType: setListMaitenanceType,
+      listServiceType: listServiceType,
+      setListServiceType: setListServiceType,
       deleteTypes: deleteTypes,
       handleEditTypes: handleEditTypes,
       formFilterRef: formFilterRef,
@@ -149,7 +149,7 @@ export function ServiceTypesProvider({ children }: { children: ReactNode }) {
       setTabActive,
       getAllTypes: getAllTypes,
     }),
-    [listMaitenanceType, tabActive]
+    [listServiceType, tabActive]
   );
   return (
     <ServiceTypesContext.Provider value={value}>

@@ -25,7 +25,7 @@ interface CellRendererParams {
 
 const TabList: React.FC = () => {
   const {
-    listMaitenanceType,
+    listServiceType,
     deleteTypes,
     handleEditTypes,
     getAllTypes,
@@ -55,7 +55,11 @@ const TabList: React.FC = () => {
               type="button"
               className="grid-button"
               onClick={() =>
-                handleEditTypes(params.data.id, params.data.description)
+                handleEditTypes(
+                  params.data.id,
+                  params.data.description,
+                  params.data.code
+                )
               }
             >
               <MdModeEdit size={20} color="#61098a" />
@@ -116,7 +120,7 @@ const TabList: React.FC = () => {
               <div className="ag-theme-alpine">
                 <AgGridReact
                   columnDefs={gridColumnDef}
-                  rowData={listMaitenanceType}
+                  rowData={listServiceType}
                   rowSelection="single"
                   animateRows
                   gridOptions={{ localeText: AgGridTranslation }}
