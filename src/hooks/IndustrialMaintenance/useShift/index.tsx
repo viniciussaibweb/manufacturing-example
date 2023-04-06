@@ -34,10 +34,10 @@ interface ShiftContextInterface {
   formFilterRef: FormRefType;
   formRegisterRef: FormRefType;
   tabActive: number;
-  startTime: DataPickerInput;
-  endTime: DataPickerInput;
-  startBreakTime: DataPickerInput;
-  endBreakTime: DataPickerInput;
+  startTime: any;
+  endTime: any;
+  startBreakTime: any;
+  endBreakTime: any;
   minTime: Moment | undefined;
   maxTime: Moment | undefined;
   setListShift: SetStateInterface<Array<ShiftData>>;

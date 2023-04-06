@@ -102,7 +102,7 @@ const TabList: React.FC = () => {
     },
     {
       field: "startTime",
-      headerName: "INICIO DO TURNO",
+      headerName: "INÍCIO DO TURNO",
       sortable: true,
       resizable: true,
       flex: 1,
@@ -124,7 +124,7 @@ const TabList: React.FC = () => {
     },
     {
       field: "startBreakTime",
-      headerName: "INICIO DO INTERVALO",
+      headerName: "INÍCIO DO INTERVALO",
       sortable: true,
       resizable: true,
       cellRenderer: formatTime,

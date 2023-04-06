@@ -55,7 +55,7 @@ const TabRegister: React.FC = () => {
         <Row gp="10px" mg="10px 0">
           <AreaComp wd="40" noPd>
             <DatePickerInput
-              label="Hora de inicio do turno:"
+              label="Hora de início do turno:"
               onChangeDate={onChangeStartTime}
               value={startTime}
               dateAndTime
@@ -77,7 +77,7 @@ const TabRegister: React.FC = () => {
         <Row gp="10px" mg="10px 0">
           <AreaComp wd="40" noPd>
             <DatePickerInput
-              label="Hora de inicio do intenvalo:"
+              label="Hora de início do intenvalo:"
               onChangeDate={onChangeStartBreackTime}
               value={startBreakTime}
               dateAndTime
@@ -87,7 +87,7 @@ const TabRegister: React.FC = () => {
           </AreaComp>
           <AreaComp wd="40" noPd>
             <DatePickerInput
-              label="Hora de fim do intenval:"
+              label="Hora de fim do intenvalo:"
               onChangeDate={onChangeEndBreackTime}
               value={endBreakTime}
               dateAndTime
