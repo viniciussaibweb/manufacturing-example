@@ -83,64 +83,69 @@ export const useAuth = () => {
   const signIn = useCallback(
     async (payload: GetAuthorizedCompaniesParams) => {
       const authService = new AuthService();
-      const responseAuthorizedCompanies =
-        await authService.getAuthorizedCompanies(payload);
+      try {
+        const responseAuthorizedCompanies =
+          await authService.getAuthorizedCompanies(payload);
+        console.log(responseAuthorizedCompanies);
+        const { success, retorno, errors } = responseAuthorizedCompanies.data;
+        if (!success) {
+          toast.error(`Acesso Negado!! ${errors.response.message}`);
+          // yield put(signFailure());
 
-      const { success, retorno, errors } = responseAuthorizedCompanies.data;
-      if (!success) {
-        // toast.error(`Acesso Negado!! ${errors.response.message}`);
-        // yield put(signFailure());
+          return;
+        }
 
-        return;
-      }
-
-      const responseLogin = await authService.authenticate({
-        username: payload.username,
-        password: payload.password,
-        EMP_ID: retorno[0].EMP_ID,
-        EMP_SAIBWEB: retorno[0].EMP_SAIBWEB,
-        EMP_RAZAO_SOCIAL: retorno[0].EMP_NOME,
-        PWDCERT: retorno[0].PWDCERT,
-      });
-
-      const successlogin = responseLogin.data.success;
-      const {
-        token,
-        EMP_ID,
-        EMP_SAIBWEB,
-        EMP_RAZAO_SOCIAL,
-        USR_ID,
-        USR_SAIBWEB_ID,
-      } = responseLogin.data.retorno;
-
-      if (successlogin) {
-        const userType = await authService.getUserType(USR_ID);
-        const responseOptionsModules = await authService.getModules({
-          usr_id: USR_ID,
-          usr_tipo: userType,
+        const responseLogin = await authService.authenticate({
+          username: payload.username,
+          password: payload.password,
+          EMP_ID: retorno[0].EMP_ID,
+          EMP_SAIBWEB: retorno[0].EMP_SAIBWEB,
+          EMP_RAZAO_SOCIAL: retorno[0].EMP_NOME,
+          PWDCERT: retorno[0].PWDCERT,
         });
 
-        const optionsEmp = retorno.map((emp: any) => emp);
+        const successlogin = responseLogin.data.success;
+        const {
+          token,
+          EMP_ID,
+          EMP_SAIBWEB,
+          EMP_RAZAO_SOCIAL,
+          USR_ID,
+          USR_SAIBWEB_ID,
+        } = responseLogin.data.retorno;
 
-        dispatch(
-          sigInSuccess({
-            token: token,
-            signed: true,
-            loading: false,
+        if (successlogin) {
+          const userType = await authService.getUserType(USR_ID);
+          const responseOptionsModules = await authService.getModules({
             usr_id: USR_ID,
-            usr_saibweb_id: USR_SAIBWEB_ID,
             usr_tipo: userType,
-            usr_login: payload.username,
-            emp_id: EMP_ID,
-            emp_saibweb: EMP_SAIBWEB,
-            emp_razao_social: EMP_RAZAO_SOCIAL,
-            optionsEmp: optionsEmp,
-            optionsModules: responseOptionsModules.retorno,
-          })
-        );
-      }
+          });
 
-      return successlogin;
+          const optionsEmp = retorno.map((emp: any) => emp);
+
+          dispatch(
+            sigInSuccess({
+              token: token,
+              signed: true,
+              loading: false,
+              usr_id: USR_ID,
+              usr_saibweb_id: USR_SAIBWEB_ID,
+              usr_tipo: userType,
+              usr_login: payload.username,
+              emp_id: EMP_ID,
+              emp_saibweb: EMP_SAIBWEB,
+              emp_razao_social: EMP_RAZAO_SOCIAL,
+              optionsEmp: optionsEmp,
+              optionsModules: responseOptionsModules.retorno,
+            })
+          );
+        }
+
+        return successlogin;
+      } catch (error) {
+        console.log(error);
+        toast.error(`Acesso Negado!! ${error}`);
+      }
     },
     [dispatch]
   );
