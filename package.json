@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "^26.2.0",
     "@emotion/styled": "^11.10.6",
     "@fortawesome/fontawesome-free": "^6.3.0",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
@@ -23,18 +24,19 @@
     "@unform/web": "^2.1.6",
     "ag-grid-community": "29.2.0",
     "ag-grid-react": "29.2.0",
-    "@ag-grid-community/client-side-row-model": "^26.2.0",
-    "react-draggable": "^4.4.5",
     "axios": "^1.3.4",
     "date-fns": "^2.29.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "moment": "^2.29.4",
     "next": "13.2.4",
     "next-redux-wrapper": "^8.1.0",
     "polished": "^4.2.2",
     "react": "18.2.0",
     "react-animations": "^1.0.0",
+    "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",
+    "react-draggable": "^4.4.5",
     "react-icons": "^4.8.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^8.0.5",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react-animations": "^1.0.0",
+    "@types/react-datepicker": "^4.10.0",
     "@types/styled-components": "^5.1.26"
   }
 }
