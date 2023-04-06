@@ -113,7 +113,7 @@ const TabList: React.FC = () => {
     },
     {
       field: "endTime",
-      headerName: "FIM DE TURNO",
+      headerName: "FIM DO TURNO",
       sortable: true,
       resizable: true,
       flex: 1,
