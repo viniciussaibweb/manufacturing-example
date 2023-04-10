@@ -5,7 +5,6 @@ import { AreaComp, Row, Toolbar, ToolbarButton } from "@/styles/global";
 import Input from "@/components/Input";
 import { MdSave } from "react-icons/md";
 import { BootstrapTooltip } from "@/components/Tooltip";
-import { useTools } from "@/hooks/IndustrialMaintenance/useTool";
 import { useScaleType } from "@/hooks/IndustrialMaintenance/useScaleType";
 
 const TabRegister: React.FC = () => {
