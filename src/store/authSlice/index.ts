@@ -80,75 +80,76 @@ export const useAuth = () => {
   const dispatch = useDispatch();
   const authData = useSelector((state: RootState) => state.auth);
 
-  const signIn = useCallback(
-    async (payload: GetAuthorizedCompaniesParams) => {
-      const authService = new AuthService();
-      try {
-        const responseAuthorizedCompanies =
-          await authService.getAuthorizedCompanies(payload);
-        console.log(responseAuthorizedCompanies);
-        const { success, retorno, errors } = responseAuthorizedCompanies.data;
-        if (!success) {
-          toast.error(`Acesso Negado!! ${errors.response.message}`);
-          // yield put(signFailure());
+  const signIn = async (payload: GetAuthorizedCompaniesParams) => {
+    const authService = new AuthService();
 
-          return;
-        }
+    try {
+      const responseAuthorizedCompanies =
+        await authService.getAuthorizedCompanies(payload);
+      console.log(responseAuthorizedCompanies);
 
-        const responseLogin = await authService.authenticate({
-          username: payload.username,
-          password: payload.password,
-          EMP_ID: retorno[0].EMP_ID,
-          EMP_SAIBWEB: retorno[0].EMP_SAIBWEB,
-          EMP_RAZAO_SOCIAL: retorno[0].EMP_NOME,
-          PWDCERT: retorno[0].PWDCERT,
+      const { success, retorno, errors } = responseAuthorizedCompanies.data;
+      if (!success) {
+        toast.error(`Acesso Negado!! ${errors.response.message}`);
+        // yield put(signFailure());
+
+        return;
+      }
+
+      const responseLogin = await authService.authenticate({
+        username: payload.username,
+        password: payload.password,
+        EMP_ID: retorno[0].EMP_ID,
+        EMP_SAIBWEB: retorno[0].EMP_SAIBWEB,
+        EMP_RAZAO_SOCIAL: retorno[0].EMP_NOME,
+        PWDCERT: retorno[0].PWDCERT,
+      });
+
+      console.log("responseLogin", responseLogin);
+
+      const successlogin = responseLogin.data.success;
+      const {
+        token,
+        EMP_ID,
+        EMP_SAIBWEB,
+        EMP_RAZAO_SOCIAL,
+        USR_ID,
+        USR_SAIBWEB_ID,
+      } = responseLogin.data.retorno;
+
+      if (successlogin) {
+        const userType = await authService.getUserType(USR_ID);
+        const responseOptionsModules = await authService.getModules({
+          usr_id: USR_ID,
+          usr_tipo: userType,
         });
 
-        const successlogin = responseLogin.data.success;
-        const {
-          token,
-          EMP_ID,
-          EMP_SAIBWEB,
-          EMP_RAZAO_SOCIAL,
-          USR_ID,
-          USR_SAIBWEB_ID,
-        } = responseLogin.data.retorno;
+        const optionsEmp = retorno.map((emp: any) => emp);
 
-        if (successlogin) {
-          const userType = await authService.getUserType(USR_ID);
-          const responseOptionsModules = await authService.getModules({
+        dispatch(
+          sigInSuccess({
+            token: token,
+            signed: true,
+            loading: false,
             usr_id: USR_ID,
+            usr_saibweb_id: USR_SAIBWEB_ID,
             usr_tipo: userType,
-          });
-
-          const optionsEmp = retorno.map((emp: any) => emp);
-
-          dispatch(
-            sigInSuccess({
-              token: token,
-              signed: true,
-              loading: false,
-              usr_id: USR_ID,
-              usr_saibweb_id: USR_SAIBWEB_ID,
-              usr_tipo: userType,
-              usr_login: payload.username,
-              emp_id: EMP_ID,
-              emp_saibweb: EMP_SAIBWEB,
-              emp_razao_social: EMP_RAZAO_SOCIAL,
-              optionsEmp: optionsEmp,
-              optionsModules: responseOptionsModules.retorno,
-            })
-          );
-        }
-
-        return successlogin;
-      } catch (error) {
-        console.log(error);
-        toast.error(`Acesso Negado!! ${error}`);
+            usr_login: payload.username,
+            emp_id: EMP_ID,
+            emp_saibweb: EMP_SAIBWEB,
+            emp_razao_social: EMP_RAZAO_SOCIAL,
+            optionsEmp: optionsEmp,
+            optionsModules: responseOptionsModules.retorno,
+          })
+        );
       }
-    },
-    [dispatch]
-  );
+
+      return successlogin;
+    } catch (error) {
+      console.log(error);
+      toast.error(`Acesso Negado!! ${error}`);
+    }
+  };
 
   const setSelectedModule = useCallback(
     (data: SetSelectedModuleInterface) => {

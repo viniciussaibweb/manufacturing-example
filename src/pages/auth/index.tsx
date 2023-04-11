@@ -32,11 +32,14 @@ const Auth: React.FC = () => {
       await schema.validate(formData, {
         abortEarly: false,
       });
-      setIsLoading(true);
-      await signIn({ username, password, empId: Number(authData?.emp_id) });
-      setIsLoading(false);
 
-      // route.push("/main");
+      setIsLoading(true);
+      await signIn({
+        username: String(username).toUpperCase(),
+        password,
+        empId: Number(authData?.emp_id),
+      });
+      setIsLoading(false);
     } catch (err) {
       const validationErrors: any = {};
       if (err instanceof Yup.ValidationError) {
@@ -49,6 +52,10 @@ const Auth: React.FC = () => {
         frmLogin.current?.setErrors(validationErrors);
       }
     }
+  }
+
+  if (authData.signed) {
+    return <div></div>;
   }
 
   return (

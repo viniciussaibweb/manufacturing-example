@@ -5,13 +5,6 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { headShake } from "react-animations";
 import "react-perfect-scrollbar/dist/css/styles.css";
-
-// import "ag-grid-community/styles/ag-grid.css";
-// import "ag-grid-community/styles/ag-theme-alpine.css";
-
-// import "ag-grid-community/dist/styles/ag-grid.css";
-// import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-
 import "react-toastify/dist/ReactToastify.css";
 
 import { device } from "./mediaQuery";
@@ -41,6 +34,7 @@ export default createGlobalStyle`
 
   html, body, #root {
     height: 100vh;
+    overflow: hidden;
   }
 
   body {

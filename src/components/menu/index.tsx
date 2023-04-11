@@ -291,8 +291,26 @@ export function Menu() {
       const identificadorItem = itemClicked.identificador;
       const arrayIdexes = identificadorItem.substring(1).split("/");
 
-      const tempArray = await Promise.all(
-        listaItensMenu.map(async (item) => {
+      // const tempArray = await Promise.all(
+      //   listaItensMenu.map(async (item) => {
+      //     if (item.identificador.endsWith(`/${arrayIdexes[0]}`)) {
+      //       if (item.itens && arrayIdexes.length > 1) {
+      //         /* se existirem mais niveis (registrados na variável arrayIndexes)
+      //          * para percorrer chama a função recursivamente até chegar
+      //          * no item selecionado na tela
+      //          */
+      //         toggleSubitem(item.itens, arrayIdexes, 1);
+      //       } else {
+      //         item.ativo = !item.ativo;
+      //       }
+      //     }
+
+      //     return item;
+      //   })
+      // );
+
+      const tempArray = produce(listaItensMenu, (draft) => {
+        draft.forEach(async (item: MenuItem) => {
           if (item.identificador.endsWith(`/${arrayIdexes[0]}`)) {
             if (item.itens && arrayIdexes.length > 1) {
               /* se existirem mais niveis (registrados na variável arrayIndexes)
@@ -304,27 +322,8 @@ export function Menu() {
               item.ativo = !item.ativo;
             }
           }
-
-          return item;
-        })
-      );
-
-      // const tempArray = produce(listaItensMenu, (draft) => {
-      //   draft.forEach(async (item: MenuItem) => {
-      //     console.log("draft", draft);
-      //     if (item.identificador.endsWith(`/${arrayIdexes[0]}`)) {
-      //       if (item.itens && arrayIdexes.length > 1) {
-      //         /* se existirem mais niveis (registrados na variável arrayIndexes)
-      //          * para percorrer chama a função recursivamente até chegar
-      //          * no item selecionado na tela
-      //          */
-      //         await toggleSubitem(item.itens, arrayIdexes, 1);
-      //       } else {
-      //         item.ativo = !item.ativo;
-      //       }
-      //     }
-      //   });
-      // });
+        });
+      });
       setItensMenu(tempArray);
     }
   };

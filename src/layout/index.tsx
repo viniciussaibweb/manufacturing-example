@@ -23,12 +23,17 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     router.push("/auth");
   }
   const loading = useLoading().loading || authData.loading;
+  const renderChildren = !authData?.signed
+    ? path === "/auth"
+      ? true
+      : false
+    : true;
 
   return (
     <main>
       <DialogLoading isOpen={loading} />
       <Global />
-      <Layout>{children}</Layout>;
+      <Layout>{renderChildren && children}</Layout>;
     </main>
   );
 };
