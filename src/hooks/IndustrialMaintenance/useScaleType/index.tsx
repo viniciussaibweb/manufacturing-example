@@ -84,14 +84,17 @@ export function ScaleTypeProvider({ children }: { children: ReactNode }) {
 
   const handleExcluir = async (mafeId: number) => {
     try {
+      setIsLoading(true);
       await scaleTypeService.deleteTool(mafeId);
-      toast.success("Item deletado com sucesso!");
       filterScaleType();
+      toast.success("Item deletado com sucesso!");
     } catch (err) {
       toast.error(
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
         getToastOptions()
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 

@@ -16,7 +16,7 @@ import {
 } from "../../../hooks/IndustrialMaintenance/useShift/index";
 
 const Shift: React.FC = () => {
-  const { getAllShift, tabActive, setTabActive } = useShift();
+  const { getAllShift, tabActive, resetTimeDate } = useShift();
 
   useEffect(() => {
     getAllShift();
@@ -36,7 +36,7 @@ const Shift: React.FC = () => {
 
         <Tab
           tabActive={tabActive}
-          onChange={(index) => setTabActive(index)}
+          onChange={(index) => resetTimeDate(index)}
           tabItems={[
             {
               component: <TabList />,

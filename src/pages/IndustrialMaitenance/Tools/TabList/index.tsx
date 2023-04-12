@@ -5,11 +5,17 @@ import {
   BoxComponentes,
   Toolbar,
   ToolbarButton,
+  ToolbarContainer,
 } from "@/styles/global";
 import { Form } from "@unform/web";
 import { AgGridReact } from "ag-grid-react";
 import React from "react";
-import { MdDelete, MdModeEdit, MdSearch } from "react-icons/md";
+import {
+  MdDelete,
+  MdModeEdit,
+  MdSearch,
+  MdAddCircleOutline,
+} from "react-icons/md";
 import { PageBody, FormContainer, GridContainer, WrapperTab } from "./styles";
 import { AgGridTranslation } from "@/components/Grid/agGridTranslation";
 import { useTools } from "@/hooks/IndustrialMaintenance/useTool";
@@ -28,6 +34,7 @@ const TabList: React.FC = () => {
     handleExcluir,
     formFilterRef,
     handleEditTool,
+    setTabActive,
   } = useTools();
 
   const gridColumnDef: ColDef[] = [
@@ -92,11 +99,18 @@ const TabList: React.FC = () => {
   return (
     <WrapperTab>
       <Toolbar colorInverterDefault>
-        <BootstrapTooltip title="Pesquisar" placement="bottom">
-          <ToolbarButton type="button" onClick={filterTools}>
-            <MdSearch size={25} color="#fff" />
-          </ToolbarButton>
-        </BootstrapTooltip>
+        <ToolbarContainer>
+          <BootstrapTooltip title="Pesquisar" placement="bottom">
+            <ToolbarButton type="button" onClick={filterTools}>
+              <MdSearch size={25} color="#fff" />
+            </ToolbarButton>
+          </BootstrapTooltip>
+          <BootstrapTooltip title="Cadastrar" placement="bottom">
+            <ToolbarButton type="button" onClick={() => setTabActive(1)}>
+              <MdAddCircleOutline size={25} color="#fff" />
+            </ToolbarButton>
+          </BootstrapTooltip>
+        </ToolbarContainer>
       </Toolbar>
       <PageBody>
         <FormContainer>

@@ -84,7 +84,11 @@ export const ButtonControllTomorrow = styled.button`
   padding: 0 10px;
 `;
 
-export const ContainerDatePicker = styled.div`
+type PropsContainerDatePicker = {
+  error?: string | undefined;
+}
+
+export const ContainerDatePicker = styled.div<PropsContainerDatePicker>`
   font-weight: 700;
   flex-direction: column;
   display: flex;
@@ -134,6 +138,9 @@ export const ContainerDatePicker = styled.div`
 
       /* height: 30px; */
     }
+  }
+  .input_cad{
+    border-color:  ${(props) => (props.error! ? "red" : "")};
   }
 
   .react-datepicker {

@@ -48,6 +48,7 @@ interface ShiftContextInterface {
   onChangeStartBreackTime: (data: any) => void;
   onChangeEndBreackTime: (data: any) => void;
   saveShift: (data: ShiftData) => void;
+  resetTimeDate: (index: number) => void;
   handleEditShift: (
     id: number,
     description: string,
@@ -76,14 +77,22 @@ export function ShiftProvider({ children }: { children: ReactNode }) {
   );
   const [endBreakTime, setEndBreakTime] = useState<DataPickerInput>(new Date());
 
-  const minTime = moment().hours(8).minutes(0);
-  const maxTime = moment().hours(17).minutes(0);
+  const minTime = moment().hours(24).minutes(0);
+  const maxTime = moment().hours(24).minutes(0);
 
   const formFilterRef = useRef<FormHandles>(null);
   const formRegisterRef = useRef<FormHandles>(null);
   const { setIsLoading } = useLoading();
 
   const [tabActive, setTabActive] = useState(0);
+
+  const resetTimeDate = (index: number) => {
+    setStartTime(new Date());
+    setEndTime(new Date());
+    setStartBreakTime(new Date());
+    setEndBreakTime(new Date());
+    setTabActive(index);
+  };
 
   const schema = Yup.object().shape({
     description: Yup.string()
@@ -116,6 +125,10 @@ export function ShiftProvider({ children }: { children: ReactNode }) {
   const saveShift = async (formData: ShiftData) => {
     try {
       const isValid = await makeValidation(schema, formData, formRegisterRef);
+
+      if (startTime! > endTime! || startBreakTime! > endBreakTime!) {
+        return;
+      }
 
       if (!isValid) {
         return;
@@ -227,6 +240,7 @@ export function ShiftProvider({ children }: { children: ReactNode }) {
       saveShift: saveShift,
       setTabActive,
       getAllShift: getAllShift,
+      resetTimeDate,
     }),
     [listShift, tabActive, startTime, endTime, startBreakTime, endBreakTime]
   );

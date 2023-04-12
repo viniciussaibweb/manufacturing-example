@@ -91,14 +91,17 @@ export function PositionsOcupationProvider({
 
   const deletePositionsOcupation = async (id: number) => {
     try {
+      setIsLoading(true);
       await positionsOcupationService.deletePositionOcupation(id);
-      toast.success("Item deletado com sucesso!");
       filterPositionsOcupation();
+      toast.success("Item deletado com sucesso!");
     } catch (err) {
       toast.error(
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
         getToastOptions()
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 

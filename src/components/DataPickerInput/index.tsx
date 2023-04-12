@@ -13,10 +13,7 @@ import { ptBR } from "date-fns/locale";
 import { setHours, setMinutes } from "date-fns";
 
 interface DatePickerInputProps {
-  onChangeDate: (
-    date: Date | Moment | null,
-    event?: SyntheticEvent<any, Event> | undefined
-  ) => void;
+  onChangeDate: (date: Moment | Date | null) => void;
   value?: Moment;
   minTime?: Moment;
   selected?: Date;
@@ -28,6 +25,7 @@ interface DatePickerInputProps {
   onDateMatch?: (date: string) => void;
   rest?: any;
   onChange?: (date: Moment) => void;
+  error?: string | undefined;
 }
 
 export default function DatePickerInput({
@@ -39,6 +37,7 @@ export default function DatePickerInput({
   minDate,
   minTime,
   readOnly,
+  error,
   ...rest
 }: DatePickerInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -147,7 +146,7 @@ export default function DatePickerInput({
       </div>
 
       {dateAndTime ? (
-        <ContainerDatePicker>
+        <ContainerDatePicker error={error}>
           <DatePicker
             selected={date.toDate()}
             onChange={onChangeDate}
@@ -179,9 +178,10 @@ export default function DatePickerInput({
               />
             }
           />
+          {error && <p style={{ color: "red" }}>{error}</p>}
         </ContainerDatePicker>
       ) : (
-        <ContainerDatePicker>
+        <ContainerDatePicker error={error}>
           <DatePicker
             selected={date.toDate()}
             onChange={onChangeDate}
@@ -202,6 +202,7 @@ export default function DatePickerInput({
               />
             }
           />
+          {error && <p>{error}</p>}
         </ContainerDatePicker>
       )}
     </Container>

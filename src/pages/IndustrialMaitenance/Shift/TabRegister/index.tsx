@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import * as S from "./styles";
 import { Form } from "@unform/web";
 import { AreaComp, Row, Toolbar, ToolbarButton } from "@/styles/global";
@@ -25,6 +25,23 @@ const TabRegister: React.FC = () => {
     onChangeStartBreackTime,
     onChangeEndBreackTime,
   } = useShift();
+
+  const endTimeError = useMemo(() => {
+    if (startTime > endTime) {
+      return "A hora final deve ser maior que a hora inicial.";
+    } else {
+      return "";
+    }
+  }, [startTime, endTime]);
+
+  const endBreackTimeError = useMemo(() => {
+    if (startBreakTime > endBreakTime) {
+      return "A hora final deve ser maior que a hora inicial.";
+    } else {
+      return "";
+    }
+  }, [startBreakTime, endBreakTime]);
+
   return (
     <S.Container>
       <Toolbar colorInverterDefault>
@@ -71,6 +88,7 @@ const TabRegister: React.FC = () => {
               dateAndTime
               minDate={minTime ? minTime : undefined}
               maxDate={maxTime ? maxTime : undefined}
+              error={endTimeError}
             />
           </AreaComp>
         </Row>
@@ -93,6 +111,7 @@ const TabRegister: React.FC = () => {
               dateAndTime
               minDate={minTime ? minTime : undefined}
               maxDate={maxTime ? maxTime : undefined}
+              error={endBreackTimeError}
             />
           </AreaComp>
         </Row>

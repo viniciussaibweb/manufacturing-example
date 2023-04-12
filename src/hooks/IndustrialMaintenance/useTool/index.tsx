@@ -79,6 +79,7 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
 
   const handleExcluir = async (mafeId: number) => {
     try {
+      setIsLoading(true);
       await toolsService.deleteTool(mafeId);
       toast.success("Item deletado com sucesso!");
       filterTools();
@@ -87,6 +88,8 @@ export function ToolsProvider({ children }: { children: ReactNode }) {
         `Não foi possível excluir o cadastro. Motivo: ${err}`,
         getToastOptions()
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
