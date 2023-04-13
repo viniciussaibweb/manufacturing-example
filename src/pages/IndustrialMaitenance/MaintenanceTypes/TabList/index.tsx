@@ -103,14 +103,14 @@ const TabList: React.FC = () => {
     <WrapperTab>
       <Toolbar colorInverterDefault>
         <ToolbarContainer>
-          <BootstrapTooltip title="Pesquisar" placement="bottom">
-            <ToolbarButton type="button" onClick={filterMaitenanceTypes}>
-              <MdSearch size={25} color="#fff" />
-            </ToolbarButton>
-          </BootstrapTooltip>
           <BootstrapTooltip title="Cadastrar" placement="bottom">
             <ToolbarButton type="button" onClick={() => setTabActive(1)}>
               <MdAddCircleOutline size={25} color="#fff" />
+            </ToolbarButton>
+          </BootstrapTooltip>
+          <BootstrapTooltip title="Pesquisar" placement="bottom">
+            <ToolbarButton type="button" onClick={filterMaitenanceTypes}>
+              <MdSearch size={25} color="#fff" />
             </ToolbarButton>
           </BootstrapTooltip>
         </ToolbarContainer>
