@@ -7,15 +7,17 @@ import { useAuth } from "@/store/authSlice";
 
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import Header from "@/components/header";
+// import Header from "@/components/header";
 
 import { ToastContainer } from "react-toastify";
 
 function LoggedLayout({ children }: { children: React.ReactNode }) {
-  // const Header = dynamic(() => import("../../components/header"), {
-  //   ssr: false,
-  // });
+  const Header = dynamic(() => import("main/components/header"), {
+    ssr: false,
+  });
+
   const [Altura, setAltura] = React.useState(0);
+  console.log(Header);
 
   const authStore = useAuth();
 
@@ -25,6 +27,7 @@ function LoggedLayout({ children }: { children: React.ReactNode }) {
     // }, 200);
     // return <div />;
   }
+  const route = useRouter();
 
   return (
     <main>
@@ -35,7 +38,13 @@ function LoggedLayout({ children }: { children: React.ReactNode }) {
             setAltura(windowSize.windowHeight - 67);
           }}
         />
-        <Header />
+        <Header
+          authData={authStore.authData}
+          signOut={authStore.signOut}
+          setNewCompany={authStore.setNewCompany}
+          setSelectedModule={authStore.setSelectedModule}
+          route={route}
+        />
         <Content altura={Altura}>
           <ToastContainer autoClose={3000} />
           <ContentArea altura={Altura}>{children}</ContentArea>

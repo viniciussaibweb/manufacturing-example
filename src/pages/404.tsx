@@ -8,7 +8,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   h1 {
-    /* text-align: center; */
     font-size: 1rem;
   }
 `;
