@@ -140,7 +140,7 @@ export const SideMenuContainer = styled.aside<PropsSideMenuContainer>`
   left: 0;
   overflow-x: hidden;
   transition: 0.4s;
-  /* z-index: 100; */
+  z-index: 200;
   display: flex;
 `;
 

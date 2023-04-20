@@ -1,26 +1,22 @@
 "use client";
-import {
-  useEffect,
-  useRef,
-  ChangeEvent,
-  FocusEvent,
-  useImperativeHandle,
-} from "react";
+import { useEffect, useRef, ChangeEvent, FocusEvent, forwardRef } from "react";
 import { useField } from "@unform/core";
 
 import { InputContainer, FormInput } from "./styles";
 
-interface propsInput {
+interface PropsInput {
   name: string;
   id?: string;
   label?: string;
   type?: string;
   isUppercase?: boolean;
   isRequired?: boolean;
+  disabled?: boolean;
   onChangeExternal?: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  maxLength?: number;
 }
 
 const Input = ({
@@ -29,8 +25,9 @@ const Input = ({
   isUppercase,
   isRequired,
   onChangeExternal,
+  maxLength,
   ...rest
-}: propsInput) => {
+}: PropsInput) => {
   const inputRef = useRef(null);
 
   const { fieldName, defaultValue = "", registerField, error } = useField(name);
@@ -65,6 +62,7 @@ const Input = ({
         onBlur={toInputUppercase}
         uppercase={Boolean(isUppercase)}
         invalid={error}
+        maxLength={maxLength}
         onChange={onChangeExternal && rest.onChange}
         {...rest}
       />

@@ -80,17 +80,17 @@ export const useAuth = () => {
   const dispatch = useDispatch();
   const authData = useSelector((state: RootState) => state.auth);
 
-  const signIn = useCallback(
-    async (payload: GetAuthorizedCompaniesParams) => {
-      const authService = new AuthService();
-      console.log(payload);
+  const signIn = async (payload: GetAuthorizedCompaniesParams) => {
+    const authService = new AuthService();
+
+    try {
       const responseAuthorizedCompanies =
         await authService.getAuthorizedCompanies(payload);
+      console.log(responseAuthorizedCompanies);
 
       const { success, retorno, errors } = responseAuthorizedCompanies.data;
-      console.log(responseAuthorizedCompanies.data);
       if (!success) {
-        // toast.error(`Acesso Negado!! ${errors.response.message}`);
+        toast.error(`Acesso Negado!! ${errors.response.message}`);
         // yield put(signFailure());
 
         return;
@@ -104,6 +104,8 @@ export const useAuth = () => {
         EMP_RAZAO_SOCIAL: retorno[0].EMP_NOME,
         PWDCERT: retorno[0].PWDCERT,
       });
+
+      console.log("responseLogin", responseLogin);
 
       const successlogin = responseLogin.data.success;
       const {
@@ -121,8 +123,6 @@ export const useAuth = () => {
           usr_id: USR_ID,
           usr_tipo: userType,
         });
-
-        console.log("optionsModules", responseOptionsModules);
 
         const optionsEmp = retorno.map((emp: any) => emp);
 
@@ -145,9 +145,11 @@ export const useAuth = () => {
       }
 
       return successlogin;
-    },
-    [dispatch]
-  );
+    } catch (error) {
+      console.log(error);
+      toast.error(`Acesso Negado!! ${error}`);
+    }
+  };
 
   const setSelectedModule = useCallback(
     (data: SetSelectedModuleInterface) => {

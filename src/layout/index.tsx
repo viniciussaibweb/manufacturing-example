@@ -9,6 +9,9 @@ import Global from "@/styles/global";
 import DialogLoading from "@/components/DialogLoading";
 import { useLoading } from "@/store/loadingSlice";
 
+import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
+import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
+
 const RootLayout = ({ children }: { children: ReactNode }) => {
   const { authData } = useAuth();
   const path = usePathname();
@@ -20,12 +23,17 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     router.push("/auth");
   }
   const loading = useLoading().loading || authData.loading;
+  const renderChildren = !authData?.signed
+    ? path === "/auth"
+      ? true
+      : false
+    : true;
 
   return (
     <main>
       <DialogLoading isOpen={loading} />
       <Global />
-      <Layout>{children}</Layout>;
+      <Layout>{renderChildren && children}</Layout>;
     </main>
   );
 };

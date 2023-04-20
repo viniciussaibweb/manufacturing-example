@@ -7,12 +7,13 @@ import { useAuth } from "@/store/authSlice";
 
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+
+import { ToastContainer } from "react-toastify";
 import Header from "@/components/header";
 
+// const Header = dynamic(() => import("auth-saibweb-front/label"));
+
 function LoggedLayout({ children }: { children: React.ReactNode }) {
-  // const Header = dynamic(() => import("../../components/header"), {
-  //   ssr: false,
-  // });
   const [Altura, setAltura] = React.useState(0);
 
   const authStore = useAuth();
@@ -27,6 +28,8 @@ function LoggedLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
       <GlobalStyle />
+      {/* <Header /> */}
+
       <Wrapper translate="no">
         <WindowSizeListener
           onResize={(windowSize) => {
@@ -35,6 +38,7 @@ function LoggedLayout({ children }: { children: React.ReactNode }) {
         />
         <Header />
         <Content altura={Altura}>
+          <ToastContainer autoClose={3000} />
           <ContentArea altura={Altura}>{children}</ContentArea>
         </Content>
       </Wrapper>

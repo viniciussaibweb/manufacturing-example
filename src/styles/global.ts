@@ -1,14 +1,11 @@
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 import { lighten } from "polished";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import Select, {
-  GroupBase,
-  Props as SelectProps,
-  OptionProps,
-} from "react-select";
+import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { headShake } from "react-animations";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { device } from "./mediaQuery";
 
@@ -37,6 +34,7 @@ export default createGlobalStyle`
 
   html, body, #root {
     height: 100vh;
+    overflow: hidden;
   }
 
   body {
@@ -247,7 +245,7 @@ input[type="radio"]:checked {
     }
 
     @media ${device.laptopL} {
-      font-size: 16px;
+        font-size: 0.9rem;
       height: 32px;
     }
 
@@ -264,11 +262,11 @@ input[type="radio"]:checked {
 
     svg {
       @media ${device.mobileS} {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
 
       @media ${device.tablet} {
-        font-size: 16px;
+        font-size: 0.9rem;
       }
 
       @media ${device.laptop} {
@@ -559,15 +557,28 @@ div.ag-root .ag-cell-focus {
   }
 }
 
+.ag-theme-alpine {
+    --ag-grid-size: 10px;
+    --ag-list-item-height: 28px;
+    --ag-row-height: 28px;
+    --ag-row-hover-color: #ecf0f1;
+    --ag-cell-horizontal-padding: 10px;
+    --ag-selected-row-background-color: rgb(141 68 175 / 60%);
+}
+
 .grid-red-row {
   background-color: #e42a3c !important;
 }
 
-.ag-theme-balham .grid-red-row.ag-row-selected {
+.ag-theme-alpine .grid-red-row.ag-row-selected {
   background-color: #e42a3c !important;
 }
 
-.ag-theme-balham {
+.ag-row {
+  /* height: 28px!important; */
+}
+
+.ag-theme-alpine {
   font-family: 'Roboto',sans-serif !important;
 }
 .row-with-error,  .row-red{
@@ -581,27 +592,42 @@ div.ag-root .ag-cell-focus {
   background-color: #8ACC8B!important;
 }
 
+.ag-header-cell {
+  padding: 0 10px;
+}
 
-.ag-theme-balham .ag-row-selected {
+.ag-row-selected {
   /* background-color: rgba(100,12,141,0.6) !important; */
   background-color: rgb(141 68 175 / 60%) !important;
 }
 
-.ag-theme-balham  .ag-row-selected .ag-cell {
+.ag-theme-alpine  .ag-row-selected .ag-cell {
   color: #fff;
 }
 
-.ag-theme-balham  .ag-row-selected .ag-cell .ag-cell-editor {
+.ag-theme-alpine  .ag-row-selected .ag-cell .ag-cell-editor {
   color: #000;
 }
 
-.ag-theme-balham .ag-select .ag-picker-field-wrapper {
+.ag-theme-alpine .ag-select .ag-picker-field-wrapper {
   color: #000;
+}
+
+.ag-header.ag-pivot-off {
+  height: 30px !important;
+  min-height: 30px !important;
+}
+.ag-header-row.ag-header-row-column {
+  height: 100%!important;
+}
+.ag-header-cell-label {
+  height: max-content;
+  align-self: center;
 }
 
 .ag-header {
-  height: 28px !important;
-  min-height: 28px !important;
+  /* height: 28px !important;
+  min-height: 28px !important; */
 
   /* @media ${device.mobileS} {
     height: 27px;
@@ -851,7 +877,8 @@ export const Container = styled.div`
     padding: 1px;
   }
 
-  .MuiPaper-elevation4 {
+  .MuiPaper-elevation4,
+  .MuiTabs-flexContainer {
     box-shadow: none;
     background: #fff;
     border-bottom: solid 1px #61098a;
@@ -1000,7 +1027,7 @@ export const Linha = styled.div`
   width: 100%;
 `;
 
-interface PropsAreaComp {
+interface propsAreaComp {
   flex?: string;
   algSelf?: string;
   fDirection?: string;
@@ -1008,17 +1035,17 @@ interface PropsAreaComp {
   pleft?: string;
   ptop?: string;
   pright?: string;
-  noPd?: string;
+  noPd?: boolean;
   mg?: number;
-  wd?: number;
+  wd?: string;
   minWd?: number;
-  hver?: string;
+  hver?: boolean;
   bright?: string;
   btn?: string;
   wdr?: number;
 }
 
-export const AreaComp = styled.div<PropsAreaComp>`
+export const AreaComp = styled.div<propsAreaComp>`
   display: flex;
   flex: ${(props) => props.flex};
   flex-direction: ${(props) =>
@@ -1150,6 +1177,7 @@ interface propsBoxComponets {
   maxWd?: string;
   flex?: string;
   wd?: string;
+  gap?: string;
 }
 
 export const BoxComponentes = styled.div<propsBoxComponets>`
@@ -1167,6 +1195,7 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
   width: ${(props) => props.maxWd || "100%"};
   max-width: ${(props) => props.maxWd};
   align-items: ${(props) => props.algItems};
+  gap: ${(props) => props.gap ?? "0"};
 
   flex: ${(props) => props.flex ?? "unset"};
   /* overflow-y: hidden !important; */
@@ -1180,8 +1209,8 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     /* flex-direction: column; */
     flex-direction: ${(props) =>
       props.fDirection ? props.fDirection : "column"};
-    .ag-theme-balham {
-      height: 50vh !important;
+    .ag-theme-alpine {
+      /* height: 50vh !important; */
     }
   }
 
@@ -1190,8 +1219,8 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     width: ${(props) => props.wd}%;
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
 
-    .ag-theme-balham {
-      height: 50vh !important;
+    .ag-theme-alpine {
+      /* height: 50vh !important; */
     }
   }
 
@@ -1199,8 +1228,8 @@ export const BoxComponentes = styled.div<propsBoxComponets>`
     /* flex-direction: row; */
     width: ${(props) => props.wd}%;
     flex-direction: ${(props) => (props.fDirection ? props.fDirection : "row")};
-    .ag-theme-balham {
-      height: 60vh !important;
+    .ag-theme-alpine {
+      /* height: 60vh !important; */
     }
   }
 `;
@@ -1387,7 +1416,7 @@ export const AsyncCustomSelect = styled(AsyncSelect)<{
 `;
 
 interface propsTolbarContainer {
-  bckColor: string;
+  bckColor?: string;
 }
 
 export const ToolbarContainer = styled.div<propsTolbarContainer>`
@@ -1595,17 +1624,18 @@ export const ToolbarBtn = styled(ToolbarButton)`
 `;
 
 interface propsRow {
-  jContent: string;
-  flwrap: string;
-  mg: number;
-  mgtop: number;
-  mgbottom: number;
-  pdtop: number;
-  pdbottom: number;
-  pdleft: number;
-  pdright: number;
-  pd: number;
-  maxWd: number;
+  jContent?: string;
+  flwrap?: string;
+  mg?: string;
+  mgtop?: number;
+  mgbottom?: number;
+  pdtop?: number;
+  pdbottom?: number;
+  pdleft?: number;
+  pdright?: number;
+  pd?: number;
+  maxWd?: number;
+  gp?: string;
 }
 
 export const Row = styled.div<propsRow>`
@@ -1623,5 +1653,47 @@ export const Row = styled.div<propsRow>`
   padding: ${(props) => props.pd && props.pd};
   width: ${(props) => props.maxWd || "100%"};
   max-width: ${(props) => props.maxWd};
+  gap: ${({ gp }) => gp ?? "0"};
 `;
-/* ======== Estilização padrão das páginas ======= */
+
+interface ToolbarProps {
+  colorInverterDefault?: boolean;
+}
+//  export const Toolbar = styled.div<ToolbarProps>`
+//   margin: auto;
+//   font-size: 16px;
+//   padding-top: 4px;
+//   color: #fff;
+//   font-weight: bold;
+
+//   ${({ colorInverterDefault }) =>
+//     colorInverterDefault &&
+//     css`
+//   color: #fff;
+
+//     `}
+// `;
+
+export const Toolbar = styled(ToolbarContainer)<ToolbarProps>`
+  justify-content: space-between;
+  margin-bottom: 0;
+  background-color: #fafafa;
+  border-bottom: solid 1px #ccc;
+  color: #543676;
+  height: 31px;
+
+  .title {
+    margin: auto;
+    font-size: 16px;
+    padding-top: 4px;
+    font-weight: bold;
+  }
+
+  ${({ colorInverterDefault }) =>
+    colorInverterDefault &&
+    css`
+      color: #fff;
+      border-bottom: 1px solid #543676;
+      background-color: #543676;
+    `}
+`;
