@@ -8,6 +8,8 @@ export interface TabProps {
       label: string;
       icon: string | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
     };
+
     component: ReactNode;
+    disabled?: boolean;
   }>;
 }
