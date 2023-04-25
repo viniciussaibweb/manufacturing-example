@@ -194,7 +194,7 @@ export const SideMenuTopContainer = styled.div`
 
 export const SideMenuLogoContainer = styled.img`
   height: 156px;
-  /* The image used */
+
   width: 100%;
   background-color: #f3f3f3;
 
