@@ -8,6 +8,8 @@ interface TabPanelProps {
   children: React.ReactNode;
   index: number;
   value: number;
+  disabled?: boolean;
+  
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -43,6 +45,7 @@ export default function Tab(props: TabProps) {
             icon={tab.title.icon}
             label={tab.title.label}
             color="#000"
+            disabled={tab.disabled} 
           />
         ))}
       </Tabs>
