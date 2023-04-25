@@ -43,7 +43,7 @@ const MaitananceType: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista tipos",
+                label: "Lista tipos de manutenção",
               },
             },
             {

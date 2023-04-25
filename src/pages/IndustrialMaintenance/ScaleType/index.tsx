@@ -26,7 +26,7 @@ const IndustrialMaitenance: React.FC = () => {
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">MUDANÇA</span>
+          <span className="title">TIPO DE ESCALA</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -42,7 +42,7 @@ const IndustrialMaitenance: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista ferramentas",
+                label: "Lista tipos de escala",
               },
             },
             {

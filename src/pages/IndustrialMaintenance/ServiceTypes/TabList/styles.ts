@@ -54,15 +54,15 @@ export const GridContainer = styled.div`
     /* height: calc(100vh - 488px) !important; */
     height: 25rem;
     @media ${device.mobileS} {
-      height: calc(100vh - 460px) !important; 
+      height: calc(100vh - 460px) !important;
     }
 
     @media ${device.tablet} {
-      height: calc(100vh - 460px) !important; 
+      height: calc(100vh - 460px) !important;
     }
 
     @media ${device.laptop} {
-      height: calc(100vh - 460px) !important; 
+      height: calc(100vh - 420px) !important;
     }
   }
 `;

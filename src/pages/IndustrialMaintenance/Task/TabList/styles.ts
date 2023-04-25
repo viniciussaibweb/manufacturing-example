@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "@/styles/mediaQuery";
 
 export const ToolbarInnerContainer = styled.div`
   width: 100%;
@@ -52,6 +53,18 @@ export const GridContainer = styled.div`
   .ag-theme-alpine {
     /* height: calc(100vh - 488px) !important; */
     height: 25rem;
+
+    @media ${device.mobileS} {
+      height: calc(100vh - 460px) !important;
+    }
+
+    @media ${device.tablet} {
+      height: calc(100vh - 460px) !important;
+    }
+
+    @media ${device.laptop} {
+      height: calc(100vh - 420px) !important;
+    }
   }
 `;
 

@@ -12,6 +12,7 @@ import { Menu } from "../menu";
 import Image from "next/image";
 import { useAuth } from "@/store/authSlice";
 import { Tooltip } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { authData, signOut } = useAuth();
@@ -36,6 +37,8 @@ export default function Header() {
     signOut();
   }
 
+  const router = useRouter();
+
   return (
     <Container>
       <Content>
@@ -48,7 +51,6 @@ export default function Header() {
             alt="www.saibweb.com.br"
           />
         </nav>
-
         <InfoContainer>
           <div style={{ display: "flex" }}>
             <MdWork size={14} />
@@ -64,6 +66,15 @@ export default function Header() {
           </div>
         </InfoContainer>
 
+        <label
+          style={{
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
+          onClick={() => router.push("/IndustrialMaintenance")}
+        >
+          RETORNAR MAN. INDUSTRIAL
+        </label>
         <aside>
           <Profile>
             <div>

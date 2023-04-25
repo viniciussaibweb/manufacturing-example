@@ -27,7 +27,7 @@ const PositionsOcupation: React.FC = () => {
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">CARGOS/OCUPAÇÂO</span>
+          <span className="title">CARGOS/OCUPAÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />

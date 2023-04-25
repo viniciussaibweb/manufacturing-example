@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "@/styles/mediaQuery";
 
 export const ToolbarInnerContainer = styled.div`
   width: 100%;
@@ -20,7 +21,7 @@ export const ToolbarInnerContainer = styled.div`
 
 export const PageBody = styled.div`
   width: 100%;
-   /* height: calc(100vh - 370px);  */
+  /* height: calc(100vh - 370px);  */
   padding-top: 10px;
   padding-left: 10px;
   height: 25rem;
@@ -52,6 +53,18 @@ export const GridContainer = styled.div`
   .ag-theme-alpine {
     /* height: calc(100vh - 488px) !important; */
     height: 25rem;
+
+    @media ${device.mobileS} {
+      height: calc(100vh - 460px) !important;
+    }
+
+    @media ${device.tablet} {
+      height: calc(100vh - 460px) !important;
+    }
+
+    @media ${device.laptop} {
+      height: calc(100vh - 420px) !important;
+    }
   }
 `;
 
@@ -75,7 +88,6 @@ export const ToolbarContainer = styled.div`
   top: 100px; */
   height: auto;
   z-index: 152;
-
 `;
 export const ToolbarDescription = styled.div`
   background: #eee9f4;
@@ -92,8 +104,7 @@ export const ToolbarDescription = styled.div`
   h5:not(:first-child) {
     margin-left: 5rem;
   }
-  h5{
+  h5 {
     margin-left: 1.3rem;
   }
-  
 `;

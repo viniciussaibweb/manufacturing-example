@@ -148,8 +148,8 @@ const TabBindTollWithTask: React.FC = () => {
           </ToolbarButton>
         </ToolbarContainer>
         <ToolbarDescription>
-          <h5>Cod. da tarefa: {idTask}</h5>
-          <h5>Descrição tarefa: {descriptionTask}</h5>
+          <h5>Código da tarefa: {idTask}</h5>
+          <h5>Descrição da tarefa: {descriptionTask}</h5>
         </ToolbarDescription>
       </Toolbar>
       <PageBody>

@@ -26,7 +26,7 @@ const Location: React.FC = () => {
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">LOCALIZAÇÂO</span>
+          <span className="title">LOCALIZAÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />

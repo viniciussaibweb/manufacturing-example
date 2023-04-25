@@ -26,7 +26,7 @@ const Function: React.FC = () => {
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">FUNÇÂO</span>
+          <span className="title">FUNÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
