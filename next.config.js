@@ -5,10 +5,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-<<<<<<< HEAD
-=======
   // devtool: "source-map",
->>>>>>> aa19168 (merge: tools)
 };
 
 module.exports = nextConfig;
