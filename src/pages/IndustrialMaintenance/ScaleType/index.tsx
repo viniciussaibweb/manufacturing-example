@@ -1,32 +1,32 @@
+"use client";
 import React, { useEffect } from "react";
+import { FaClipboard } from "react-icons/fa";
 import { PageContainer, Wrapper, ToolbarButtonBack } from "./styles";
 import { Toolbar } from "../../../styles/global";
 import { MdClose, MdSearch } from "react-icons/md";
-import { FaClipboard } from "react-icons/fa";
 import { BootstrapTooltip } from "../../../components/Tooltip/index";
 
+import TabList from "./TabList";
+import { ToolsProvider, useTools } from "@/hooks/IndustrialMaintenance/useTool";
 import Tab from "@/components/Tab";
-
-import TabList from "./TabList/index";
-import TabRegister from "./TabRegister/index";
-
+import TabRegister from "./TabRegister";
 import {
-  useLocation,
-  LocationProvider,
-} from "../../../hooks/IndustrialMaintenance/useLocation/index";
+  ScaleTypeProvider,
+  useScaleType,
+} from "@/hooks/IndustrialMaintenance/useScaleType";
 
-const Location: React.FC = () => {
-  const { filterLocation, tabActive, setTabActive } = useLocation();
+const IndustrialMaitenance: React.FC = () => {
+  const { filterScaleType, tabActive, setTabActive } = useScaleType();
 
   useEffect(() => {
-    filterLocation();
+    filterScaleType();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">LOCALIZAÇÂO</span>
+          <span className="title">TIPO DE ESCALA</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -42,7 +42,7 @@ const Location: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista localização",
+                label: "Lista tipos de escala",
               },
             },
             {
@@ -60,7 +60,7 @@ const Location: React.FC = () => {
 };
 
 export default () => (
-  <LocationProvider>
-    <Location />
-  </LocationProvider>
+  <ScaleTypeProvider>
+    <IndustrialMaitenance />
+  </ScaleTypeProvider>
 );

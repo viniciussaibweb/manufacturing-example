@@ -11,23 +11,22 @@ import TabList from "./TabList/index";
 import TabRegister from "./TabRegister/index";
 
 import {
-  useMaitenanceTypes,
-  MaitananceTypesProvider,
-} from "../../../hooks/IndustrialMaintenance/useMaitenanceTypes";
+  useFunction,
+  FunctionProvider,
+} from "../../../hooks/IndustrialMaintenance/useFunction/index";
 
-const MaitananceType: React.FC = () => {
-  const { filterMaitenanceTypes, tabActive, setTabActive } =
-    useMaitenanceTypes();
+const Function: React.FC = () => {
+  const { filterFunction, tabActive, setTabActive } = useFunction();
 
   useEffect(() => {
-    filterMaitenanceTypes();
+    filterFunction();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">TIPOS DE MANUTENÇÃO</span>
+          <span className="title">FUNÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -43,7 +42,7 @@ const MaitananceType: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista tipos",
+                label: "Lista função",
               },
             },
             {
@@ -61,7 +60,7 @@ const MaitananceType: React.FC = () => {
 };
 
 export default () => (
-  <MaitananceTypesProvider>
-    <MaitananceType />
-  </MaitananceTypesProvider>
+  <FunctionProvider>
+    <Function />
+  </FunctionProvider>
 );

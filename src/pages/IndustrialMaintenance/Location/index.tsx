@@ -1,32 +1,32 @@
-"use client";
 import React, { useEffect } from "react";
-import { FaClipboard } from "react-icons/fa";
 import { PageContainer, Wrapper, ToolbarButtonBack } from "./styles";
 import { Toolbar } from "../../../styles/global";
 import { MdClose, MdSearch } from "react-icons/md";
+import { FaClipboard } from "react-icons/fa";
 import { BootstrapTooltip } from "../../../components/Tooltip/index";
 
-import TabList from "./TabList";
-import { ToolsProvider, useTools } from "@/hooks/IndustrialMaintenance/useTool";
 import Tab from "@/components/Tab";
-import TabRegister from "./TabRegister";
-import {
-  ScaleTypeProvider,
-  useScaleType,
-} from "@/hooks/IndustrialMaintenance/useScaleType";
 
-const IndustrialMaitenance: React.FC = () => {
-  const { filterScaleType, tabActive, setTabActive } = useScaleType();
+import TabList from "./TabList/index";
+import TabRegister from "./TabRegister/index";
+
+import {
+  useLocation,
+  LocationProvider,
+} from "../../../hooks/IndustrialMaintenance/useLocation/index";
+
+const Location: React.FC = () => {
+  const { filterLocation, tabActive, setTabActive } = useLocation();
 
   useEffect(() => {
-    filterScaleType();
+    filterLocation();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">MUDANÇA</span>
+          <span className="title">LOCALIZAÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -42,7 +42,7 @@ const IndustrialMaitenance: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista ferramentas",
+                label: "Lista localização",
               },
             },
             {
@@ -60,7 +60,7 @@ const IndustrialMaitenance: React.FC = () => {
 };
 
 export default () => (
-  <ScaleTypeProvider>
-    <IndustrialMaitenance />
-  </ScaleTypeProvider>
+  <LocationProvider>
+    <Location />
+  </LocationProvider>
 );

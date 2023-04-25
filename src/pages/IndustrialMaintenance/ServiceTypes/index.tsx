@@ -11,23 +11,22 @@ import TabList from "./TabList/index";
 import TabRegister from "./TabRegister/index";
 
 import {
-  usePositionOcupation,
-  PositionsOcupationProvider,
-} from "../../../hooks/IndustrialMaintenance/usePositionsOcupation";
+  useServiceTypes,
+  ServiceTypesProvider,
+} from "../../../hooks/IndustrialMaintenance/useServiceTypes/index";
 
-const PositionsOcupation: React.FC = () => {
-  const { filterPositionsOcupation, tabActive, setTabActive } =
-    usePositionOcupation();
+const ServiceTypes: React.FC = () => {
+  const { getAllTypes, tabActive, setTabActive } = useServiceTypes();
 
   useEffect(() => {
-    filterPositionsOcupation();
+    getAllTypes();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">CARGOS/OCUPAÇÂO</span>
+          <span className="title">TIPOS DE SERVIÇO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -43,7 +42,7 @@ const PositionsOcupation: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista Cargos/Ocupação",
+                label: "Lista tipos de serviço",
               },
             },
             {
@@ -61,7 +60,7 @@ const PositionsOcupation: React.FC = () => {
 };
 
 export default () => (
-  <PositionsOcupationProvider>
-    <PositionsOcupation />
-  </PositionsOcupationProvider>
+  <ServiceTypesProvider>
+    <ServiceTypes />
+  </ServiceTypesProvider>
 );

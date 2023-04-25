@@ -11,22 +11,23 @@ import TabList from "./TabList/index";
 import TabRegister from "./TabRegister/index";
 
 import {
-  useFunction,
-  FunctionProvider,
-} from "../../../hooks/IndustrialMaintenance/useFunction/index";
+  usePositionOcupation,
+  PositionsOcupationProvider,
+} from "../../../hooks/IndustrialMaintenance/usePositionsOcupation";
 
-const Function: React.FC = () => {
-  const { filterFunction, tabActive, setTabActive } = useFunction();
+const PositionsOcupation: React.FC = () => {
+  const { filterPositionsOcupation, tabActive, setTabActive } =
+    usePositionOcupation();
 
   useEffect(() => {
-    filterFunction();
+    filterPositionsOcupation();
   }, []);
 
   return (
     <Wrapper>
       <PageContainer>
         <Toolbar>
-          <span className="title">FUNÇÂO</span>
+          <span className="title">CARGOS/OCUPAÇÃO</span>
           <BootstrapTooltip title="Voltar para Dashboard" placement="top">
             <ToolbarButtonBack type="button">
               <MdClose size={21} color="#61098a" />
@@ -42,7 +43,7 @@ const Function: React.FC = () => {
               component: <TabList />,
               title: {
                 icon: <MdSearch size={20} />,
-                label: "Lista função",
+                label: "Lista Cargos/Ocupação",
               },
             },
             {
@@ -60,7 +61,7 @@ const Function: React.FC = () => {
 };
 
 export default () => (
-  <FunctionProvider>
-    <Function />
-  </FunctionProvider>
+  <PositionsOcupationProvider>
+    <PositionsOcupation />
+  </PositionsOcupationProvider>
 );
