@@ -7,7 +7,9 @@ const IndustrialMaitenance: React.FC = () => {
   return (
     <div>
       <ul>
-        <li onClick={() => router.push("/IndustrialMaintenance/Tools")}>AA</li>
+        <li onClick={() => router.push("/IndustrialMaintenance/Tools")}>
+          Tools
+        </li>
       </ul>
     </div>
   );
